@@ -1,24 +1,12 @@
 import express from "express";
+import { PORT } from "./config.js";
 import morgan from "morgan";
-import { pool } from "./db.js";
+import userRoutes from "./Routes/user.routes.js";
 
 const app = express();
-const PORT = process.env.PORT || 4000;
 
-// Middlewares
-app.use(morgan("dev"));
 app.use(express.json());
+app.use(userRoutes);
 
-// Ruta de prueba
-app.get("/ping", async (req, res) => {
-  try {
-    const result = await pool.query("SELECT NOW()");
-    res.json({ message: "pong", time: result.rows[0].now });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-app.listen(PORT, () => {
-  console.log(`Servidor escuchando en el puerto ${PORT}`);
-});
+app.listen(PORT);
+console.log("server on port", PORT);
