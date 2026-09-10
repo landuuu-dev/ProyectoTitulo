@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { pool } from "../db.js";
 
-// Obtener la clave desde variables de entorno
+// Obtener la clave
 const SECRET_KEY = process.env.SECRET_KEY || "clave_de_respaldo_local";
 
 // POST /login

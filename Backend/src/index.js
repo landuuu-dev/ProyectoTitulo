@@ -1,8 +1,10 @@
 import express from "express";
-import { PORT } from "./config.js";
 import morgan from "morgan";
 import userRoutes from "./Routes/user.routes.js";
 import authRoutes from "./Routes/auth.routes.js";
+
+process.loadEnvFile();
+const PORT = process.env.PORT ?? 3000;
 
 const app = express();
 
