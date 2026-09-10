@@ -10,3 +10,4 @@ app.use(userRoutes);
 
 app.listen(PORT);
 console.log("server on port", PORT);
+console.log("app iniciada");
