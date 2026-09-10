@@ -164,3 +164,32 @@ export const deleteSitio = async (req, res) => {
     });
   }
 };
+
+export const getSitiosCercanos = async (req, res) => {
+  try {
+    const { lat, lng, radio } = req.query;
+
+    if (!lat || !lng) {
+      return res
+        .status(400)
+        .json({
+          error: "Debes proporcionar lat y lng en los parámetros de búsqueda",
+        });
+    }
+
+    const sitios = await SitiosRepository.getCercanos(
+      parseFloat(lat),
+      parseFloat(lng),
+      radio ? parseInt(radio) : 5000, // Radio por defecto: 5 km (5000m)
+    );
+
+    return res.status(200).json(sitios);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({
+        error: "Error al buscar sitios cercanos",
+        details: error.message,
+      });
+  }
+};

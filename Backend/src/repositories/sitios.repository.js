@@ -138,4 +138,26 @@ export const SitiosRepository = {
     );
     return result.rows[0] || null;
   },
+
+  async getCercanos(lat, lng, radioMetros = 5000) {
+    const result = await pool.query(
+      `SELECT 
+        id_sitio,
+        titulo_es,
+        descripcion_es,
+        imagen_url,
+        ST_X(ubicacion::geometry) AS longitud,
+        ST_Y(ubicacion::geometry) AS latitud,
+        ROUND(ST_Distance(ubicacion, ST_SetSRID(ST_MakePoint($1, $2), 4326)::geography)) AS distancia_metros
+     FROM sitios_patrimoniales
+     WHERE ST_DWithin(
+        ubicacion,
+        ST_SetSRID(ST_MakePoint($1, $2), 4326)::geography,
+        $3
+     )
+     ORDER BY distancia_metros ASC`,
+      [lng, lat, radioMetros],
+    );
+    return result.rows;
+  },
 };

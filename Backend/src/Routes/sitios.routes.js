@@ -5,32 +5,22 @@ import {
   create,
   update,
   deleteSitio,
+  getSitiosCercanos,
 } from "../Controllers/sitios.controller.js";
 import { verifyTokenHeader } from "../utils/token.utils.js";
 
 const router = Router();
 
-// ==========================================
-// Rutas Públicas (Lectura para visitantes)
-// ==========================================
-
-// Obtener todos los sitios patrimoniales
+// 1. Rutas específicas (DEBEN ir arriba)
 router.get("/sitios", getSitios);
+router.get("/sitios/cercanos", getSitiosCercanos);
 
-// Obtener un sitio por su ID
+// 2. Rutas dinámicas con parámetros (DEBEN ir abajo)
 router.get("/sitios/:id", findByIdSitios);
 
-// ==========================================
-// Rutas Protegidas (Requieren autenticación)
-// ==========================================
-
-// Crear un nuevo sitio patrimonial
+// Rutas protegidas
 router.post("/sitios", verifyTokenHeader, create);
-
-// Actualizar un sitio patrimonial por ID
 router.put("/sitios/:id", verifyTokenHeader, update);
-
-// Eliminar un sitio patrimonial por ID
 router.delete("/sitios/:id", verifyTokenHeader, deleteSitio);
 
 export default router;
