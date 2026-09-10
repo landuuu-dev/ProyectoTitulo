@@ -32,6 +32,7 @@ export const UserRepository = {
     return result.rows[0] || null;
   },
 
+  //API
   async create({ nombre, email, password, id_rol }) {
     const result = await pool.query(
       `INSERT INTO usuarios (nombre, email, password, id_rol) 
