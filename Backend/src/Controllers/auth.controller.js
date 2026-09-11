@@ -34,6 +34,15 @@ export const getUserById = async (req, res) => {
       .json({ error: "Error al obtener el usuario", details: error.message });
   }
 };
+
+// Función para generar el token
+const generateToken = (usuario) => {
+  return jwt.sign(
+    { id: usuario.id, email: usuario.email },
+    process.env.JWT_SECRET || "secreto_temporal",
+    { expiresIn: "24h" },
+  );
+};
 //LOGIN
 export const login = async (req, res) => {
   try {
