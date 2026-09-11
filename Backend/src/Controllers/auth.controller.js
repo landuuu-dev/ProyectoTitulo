@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { UserRepository } from "../repositories/auth.repository.js";
 import { hashPassword, comparePassword } from "../utils/hash.utils.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 const SECRET_KEY = process.env.SECRET_KEY || "clave_de_respaldo_local";
 
