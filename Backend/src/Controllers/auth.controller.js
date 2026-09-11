@@ -66,6 +66,34 @@ export const login = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+//REGISTRO
+export const register = async (req, res) => {
+  const { nombre, email, password, id_rol } = req.body;
+  if (!nombre || !email || !password || !id_rol) {
+    return res
+      .status(400)
+      .json({ message: "Todos los campos son obligatorios" });
+  }
+
+  try {
+    const hashedPassword = await hashPassword(password);
+    const newUser = await UserRepository.create({
+      nombre,
+      email,
+      password: hashedPassword,
+      id_rol,
+    });
+
+    res.status(201).json(newUser);
+  } catch (error) {
+    if (error.code === "23505") {
+      return res.status(400).json({ message: "El email ya está registrado" });
+    }
+    res
+      .status(500)
+      .json({ error: "Error al crear usuario", details: error.message });
+  }
+};
 //ACTUALIZAR USUARIO
 export const updateUser = async (req, res) => {
   const { id } = req.params;
