@@ -5,6 +5,7 @@ import sitiosRoutes from "./Routes/sitios.routes.js";
 import eventosRoutes from "./Routes/eventos.routes.js";
 import categoriasRoutes from "./Routes/categoria.routes.js"; // <--- Importar la RUTA, no el controlador
 import favoritosRoutes from "./Routes/favoritos.routes.js"; // <--- Módulo de favoritos
+import cors from "cors";
 
 process.loadEnvFile();
 const PORT = process.env.PORT ?? 3000;
@@ -14,6 +15,8 @@ const app = express();
 // Middlewares principales
 app.use(morgan("dev"));
 app.use(express.json());
+// Permite peticiones desde cualquier origen durante las pruebas
+app.use(cors());
 
 // Registro de rutas
 app.use(authRoutes);
