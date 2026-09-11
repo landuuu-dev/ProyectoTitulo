@@ -3,9 +3,10 @@ import { UserRepository } from "../repositories/auth.repository.js";
 import { hashPassword, comparePassword } from "../utils/hash.utils.js";
 import bcrypt from "bcryptjs";
 
+// Mantenemos la misma clave secreta que usa token.utils.js
 const SECRET_KEY = process.env.SECRET_KEY || "clave_de_respaldo_local";
 
-//LISTAR TODOS LOS USUARIOS
+// LISTAR TODOS LOS USUARIOS
 export const getUsers = async (req, res) => {
   try {
     const users = await UserRepository.getUsers();
@@ -16,7 +17,8 @@ export const getUsers = async (req, res) => {
       .json({ error: "Error al obtener usuarios", details: error.message });
   }
 };
-//LISTAR POR id
+
+// LISTAR POR id
 export const getUserById = async (req, res) => {
   const { id } = req.params;
 
@@ -35,15 +37,16 @@ export const getUserById = async (req, res) => {
   }
 };
 
-// Función para generar el token
+// CORRECCIÓN: Usar la misma SECRET_KEY y mapear usuario.id_usuario
 const generateToken = (usuario) => {
   return jwt.sign(
-    { id: usuario.id, email: usuario.email },
-    process.env.JWT_SECRET || "secreto_temporal",
+    { id: usuario.id_usuario, email: usuario.email, rol: usuario.nombre_rol },
+    SECRET_KEY,
     { expiresIn: "24h" },
   );
 };
-//LOGIN
+
+// LOGIN
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -58,25 +61,28 @@ export const login = async (req, res) => {
     }
 
     console.log("---> Usuario hallado en BD:", usuario.email);
-    console.log("---> Hash almacenado en BD:", usuario.password);
 
-    // Comparación directa de bcrypt
-    const isMatch = await bcrypt.compare(password, usuario.password);
-    console.log("---> Resultado de bcrypt.compare:", isMatch);
+    // Puedes usar directamente comparePassword de tu hash.utils.js
+    const isMatch = await comparePassword(password, usuario.password);
+    console.log("---> Resultado de comparación:", isMatch);
 
     if (!isMatch) {
       return res.status(401).json({ message: "Credenciales inválidas" });
     }
 
-    // AQUÍ ESTABA EL PROBLEMA: Tenías estas líneas comentadas
     const token = generateToken(usuario);
-    return res.status(200).json({ token, usuario });
+
+    // Omitimos enviar la contraseña en la respuesta
+    const { password: _, ...usuarioSinPassword } = usuario;
+
+    return res.status(200).json({ token, usuario: usuarioSinPassword });
   } catch (error) {
     console.error("Error en login:", error);
     return res.status(500).json({ error: error.message });
   }
 };
-//REGISTRO
+
+// REGISTRO
 export const register = async (req, res) => {
   const { nombre, email, password, id_rol } = req.body;
   if (!nombre || !email || !password || !id_rol) {
@@ -104,7 +110,8 @@ export const register = async (req, res) => {
       .json({ error: "Error al crear usuario", details: error.message });
   }
 };
-//ACTUALIZAR USUARIO
+
+// ACTUALIZAR USUARIO
 export const updateUser = async (req, res) => {
   const { id } = req.params;
   const { nombre, email, password, id_rol } = req.body;
@@ -142,7 +149,8 @@ export const updateUser = async (req, res) => {
     });
   }
 };
-//ELIMINAR USUARIO
+
+// ELIMINAR USUARIO
 export const deleteUser = async (req, res) => {
   const { id } = req.params;
 
@@ -167,7 +175,7 @@ export const deleteUser = async (req, res) => {
   }
 };
 
-//LOGOUT
+// LOGOUT
 export const logout = async (req, res) => {
   try {
     res.status(200).json({
