@@ -10,15 +10,22 @@ export const SitiosRepository = {
         s.titulo_en,
         s.descripcion_es,
         s.descripcion_en,
-        ST_AsGeoJSON(s.ubicacion)::json AS ubicacion,
+        ST_AsGeoJSON(s.ubicacion) AS ubicacion,
+        ST_X(s.ubicacion::geometry) AS longitud,
+        ST_Y(s.ubicacion::geometry) AS latitud,
         s.imagen_url,
         s.audioguia_url,
         s.id_creador,
-        u.nombre AS nombre_creador
+        COALESCE(u.nombre, 'Sin Creador') AS nombre_creador
       FROM sitios_patrimoniales s
-      JOIN usuarios u ON s.id_creador = u.id_usuario
+      LEFT JOIN usuarios u ON s.id_creador = u.id_usuario
     `);
-    return result.rows;
+
+    // Parsear el GeoJSON para que se entregue como objeto JSON nativo al frontend
+    return result.rows.map((row) => ({
+      ...row,
+      ubicacion: row.ubicacion ? JSON.parse(row.ubicacion) : null,
+    }));
   },
 
   // 2. Buscar sitio por ID
@@ -30,20 +37,29 @@ export const SitiosRepository = {
         s.titulo_en,
         s.descripcion_es,
         s.descripcion_en,
-        ST_AsGeoJSON(s.ubicacion)::json AS ubicacion,
+        ST_AsGeoJSON(s.ubicacion) AS ubicacion,
+        ST_X(s.ubicacion::geometry) AS longitud,
+        ST_Y(s.ubicacion::geometry) AS latitud,
         s.imagen_url,
         s.audioguia_url,
         s.id_creador,
-        u.nombre AS nombre_creador
+        COALESCE(u.nombre, 'Sin Creador') AS nombre_creador
       FROM sitios_patrimoniales s
-      JOIN usuarios u ON s.id_creador = u.id_usuario
+      LEFT JOIN usuarios u ON s.id_creador = u.id_usuario
       WHERE s.id_sitio = $1`,
       [id],
     );
-    return result.rows[0] || null;
+
+    if (result.rows.length === 0) return null;
+
+    const row = result.rows[0];
+    return {
+      ...row,
+      ubicacion: row.ubicacion ? JSON.parse(row.ubicacion) : null,
+    };
   },
 
-  // 3. Crear sitio (convirtiendo latitud y longitud a PostGIS Geography)
+  // 3. Crear sitio
   async create({
     titulo_es,
     titulo_en,
@@ -87,7 +103,7 @@ export const SitiosRepository = {
     return result.rows[0];
   },
 
-  // 4. Actualizar sitio por ID
+  // 4. Actualizar sitio
   async update(
     id,
     {
@@ -128,7 +144,7 @@ export const SitiosRepository = {
     return result.rows[0] || null;
   },
 
-  // 5. Eliminar sitio por ID
+  // 5. Eliminar sitio
   async deleteSitio(id) {
     const result = await pool.query(
       `DELETE FROM sitios_patrimoniales 
@@ -139,6 +155,7 @@ export const SitiosRepository = {
     return result.rows[0] || null;
   },
 
+  // 6. Obtener sitios cercanos
   async getCercanos(lat, lng, radioMetros = 5000) {
     const result = await pool.query(
       `SELECT 
