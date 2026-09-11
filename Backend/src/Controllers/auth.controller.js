@@ -35,46 +35,38 @@ export const getUserById = async (req, res) => {
   }
 };
 //LOGIN
-app.post("/login", async (req, res) => {
+export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+
     console.log("---> Datos recibidos en body:", { email, password });
 
-    const user = await buscarUsuarioEnBD(email); // Consulta a Supabase
-    if (!user) {
-      return res.status(404).json({ error: "Usuario no encontrado" });
-    }
-    console.log("---> Usuario hallado en BD:", user.email);
-    console.log("---> Hash almacenado en BD:", user.password);
+    const usuario = await UserRepository.findByEmail(email);
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    if (!usuario) {
+      console.log("---> Usuario no encontrado en BD para email:", email);
+      return res.status(401).json({ message: "Credenciales inválidas" });
+    }
+
+    console.log("---> Usuario hallado en BD:", usuario.email);
+    console.log("---> Hash almacenado en BD:", usuario.password);
+
+    // Comparación directa de bcrypt
+    const isMatch = await bcrypt.compare(password, usuario.password);
     console.log("---> Resultado de bcrypt.compare:", isMatch);
 
     if (!isMatch) {
-      // SIEMPRE responder cuando la contraseña sea incorrecta
-      return res.status(401).json({ error: "Contraseña incorrecta" });
+      return res.status(401).json({ message: "Credenciales inválidas" });
     }
 
-    // AQUÍ ESTÁ EL FALLO: Faltaba enviar la respuesta cuando la validación es exitosa
-    const token = jwt.sign(
-      { id: user.id, email: user.email },
-      process.env.JWT_SECRET,
-    );
-
-    return res.status(200).json({
-      mensaje: "Login exitoso",
-      token,
-      usuario: {
-        id: user.id,
-        email: user.email,
-      },
-    });
+    // AQUÍ ESTABA EL PROBLEMA: Tenías estas líneas comentadas
+    const token = generateToken(usuario);
+    return res.status(200).json({ token, usuario });
   } catch (error) {
-    console.error("Error en el proceso de login:", error);
-    // SIEMPRE responder en el catch para no colgar la petición ante excepciones
-    return res.status(500).json({ error: "Error interno del servidor" });
+    console.error("Error en login:", error);
+    return res.status(500).json({ error: error.message });
   }
-});
+};
 //REGISTRO
 export const register = async (req, res) => {
   const { nombre, email, password, id_rol } = req.body;
