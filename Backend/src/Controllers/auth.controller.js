@@ -35,76 +35,35 @@ export const getUserById = async (req, res) => {
 };
 //LOGIN
 export const login = async (req, res) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(400).json({ message: "Email y contraseña requeridos" });
-  }
-
   try {
-    const user = await UserRepository.findByEmail(email);
-    if (!user) {
+    const { email, password } = req.body;
+
+    console.log("---> Datos recibidos en body:", { email, password });
+
+    const usuario = await UserRepository.findByEmail(email);
+
+    if (!usuario) {
+      console.log("---> Usuario no encontrado en BD para email:", email);
       return res.status(401).json({ message: "Credenciales inválidas" });
     }
 
-    const isMatch = await comparePassword(password, user.password);
+    console.log("---> Usuario hallado en BD:", usuario.email);
+    console.log("---> Hash almacenado en BD:", usuario.password);
+
+    // Comparación directa de bcrypt
+    const isMatch = await bcrypt.compare(password, usuario.password);
+    console.log("---> Resultado de bcrypt.compare:", isMatch);
+
     if (!isMatch) {
       return res.status(401).json({ message: "Credenciales inválidas" });
     }
 
-    const token = jwt.sign(
-      {
-        id_usuario: user.id_usuario,
-        nombre: user.nombre,
-        email: user.email,
-        rol: user.nombre_rol,
-      },
-      SECRET_KEY,
-      { expiresIn: "8h" },
-    );
-
-    res.status(200).json({
-      message: "Inicio de sesión exitoso",
-      token,
-      user: {
-        id_usuario: user.id_usuario,
-        nombre: user.nombre,
-        email: user.email,
-        rol: user.nombre_rol,
-      },
-    });
+    // Si coincide, genera el token JWT...
+    // const token = generateToken(usuario);
+    // return res.json({ token, usuario });
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Error en el servidor", details: error.message });
-  }
-};
-//REGISTRO
-export const register = async (req, res) => {
-  const { nombre, email, password, id_rol } = req.body;
-  if (!nombre || !email || !password || !id_rol) {
-    return res
-      .status(400)
-      .json({ message: "Todos los campos son obligatorios" });
-  }
-
-  try {
-    const hashedPassword = await hashPassword(password);
-    const newUser = await UserRepository.create({
-      nombre,
-      email,
-      password: hashedPassword,
-      id_rol,
-    });
-
-    res.status(201).json(newUser);
-  } catch (error) {
-    if (error.code === "23505") {
-      return res.status(400).json({ message: "El email ya está registrado" });
-    }
-    res
-      .status(500)
-      .json({ error: "Error al crear usuario", details: error.message });
+    console.error("Error en login:", error);
+    return res.status(500).json({ error: error.message });
   }
 };
 //ACTUALIZAR USUARIO
