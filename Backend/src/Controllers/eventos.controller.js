@@ -1,3 +1,35 @@
+// Listar eventos
+export const getEventos = async (req, res) => {
+  try {
+    const eventos = await EventosRepository.getEventos();
+    return res.status(200).json(eventos);
+  } catch (error) {
+    return res.status(500).json({
+      error: "Error al obtener los eventos culturales",
+      details: error.message,
+    });
+  }
+};
+
+// Obtener evento por ID
+export const findByIdEventos = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const evento = await EventosRepository.findById(id);
+
+    if (!evento) {
+      return res.status(404).json({ message: "Evento cultural no encontrado" });
+    }
+
+    return res.status(200).json(evento);
+  } catch (error) {
+    return res.status(500).json({
+      error: "Error al buscar el evento cultural",
+      details: error.message,
+    });
+  }
+};
+
 export const createEvento = async (req, res) => {
   try {
     const {
@@ -86,6 +118,29 @@ export const updateEvento = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       error: "Error al actualizar el evento cultural",
+      details: error.message,
+    });
+  }
+};
+// Eliminar evento
+export const deleteEvento = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const eventoEliminado = await EventosRepository.delete(id);
+
+    if (!eventoEliminado) {
+      return res
+        .status(404)
+        .json({ message: "Evento cultural no encontrado para eliminar" });
+    }
+
+    return res.status(200).json({
+      message: "Evento cultural eliminado exitosamente",
+      id_evento: eventoEliminado.id_evento,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: "Error al eliminar el evento cultural",
       details: error.message,
     });
   }
