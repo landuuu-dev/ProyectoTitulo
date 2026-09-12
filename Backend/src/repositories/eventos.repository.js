@@ -1,3 +1,5 @@
+import { pool } from "../db.js";
+
 export const EventosRepository = {
   // Listar todos los eventos
   async getEventos() {
