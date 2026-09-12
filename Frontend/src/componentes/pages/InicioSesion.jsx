@@ -28,7 +28,6 @@ export default function InicioSesion() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setError("");
 
     if (!formulario.email.trim() || !formulario.password) {
@@ -58,25 +57,34 @@ export default function InicioSesion() {
         );
       }
 
-      // Guardar JWT
-      localStorage.setItem("token", data.token);
+      // =========================================
+      // GUARDAR SESIÓN
+      // =========================================
 
-      // Guardar información del usuario
-      localStorage.setItem("usuario", JSON.stringify(data.usuario));
+      sessionStorage.setItem("token", data.token);
+
+      sessionStorage.setItem("usuario", JSON.stringify(data.usuario));
+
+      // Avisar al Navbar que cambió la sesión
+      window.dispatchEvent(new Event("authChanged"));
 
       // =========================================
-      // REDIRECCIÓN SEGÚN ROL (por nombre_rol)
+      // REDIRECCIÓN SEGÚN ROL
       // =========================================
 
       const rol = data.usuario?.nombre_rol;
 
       if (rol === "Administrador") {
         navigate("/panel-administracion");
-      } else if (rol === "Usuario") {
-        navigate("/perfil-usuario");
-      } else {
-        setError("El usuario tiene un rol no válido.");
+        return;
       }
+
+      if (rol === "Usuario") {
+        navigate("/perfil-usuario");
+        return;
+      }
+
+      setError("El usuario tiene un rol no válido.");
     } catch (err) {
       setError(err.message || "Ocurrió un error al iniciar sesión.");
     } finally {

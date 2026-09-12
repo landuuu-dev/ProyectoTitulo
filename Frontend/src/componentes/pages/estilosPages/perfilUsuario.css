@@ -1,0 +1,132 @@
+.perfil-root {
+  min-height: calc(100vh - 80px);
+  background: #f5f7f3;
+  padding: 50px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.perfil-card {
+  width: 100%;
+  max-width: 850px;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 40px;
+  box-shadow: 0 8px 25px rgba(48, 79, 53, 0.08);
+  border: 1px solid #e3eadf;
+}
+
+.perfil-header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.perfil-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: #cce8cc;
+  color: #304f35;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 38px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.perfil-subtitulo {
+  margin: 0 0 5px;
+  color: #5b8c5a;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.perfil-header h1 {
+  margin: 0 0 10px;
+  color: #304f35;
+  font-size: 32px;
+}
+
+.perfil-rol {
+  display: inline-block;
+  background: #d4ead4;
+  color: #456f46;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.perfil-separador {
+  height: 1px;
+  background: #e5ebe2;
+  margin: 35px 0;
+}
+
+.perfil-informacion h2 {
+  margin: 0 0 25px;
+  color: #304f35;
+  font-size: 22px;
+}
+
+.perfil-datos {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.perfil-dato {
+  background: #f7f9f6;
+  border: 1px solid #e5ebe2;
+  border-radius: 12px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.dato-label {
+  color: #718071;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.dato-valor {
+  color: #304f35;
+  font-size: 16px;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+@media (max-width: 650px) {
+  .perfil-root {
+    padding: 30px 15px;
+  }
+
+  .perfil-card {
+    padding: 25px 20px;
+  }
+
+  .perfil-header {
+    align-items: flex-start;
+  }
+
+  .perfil-avatar {
+    width: 70px;
+    height: 70px;
+    font-size: 28px;
+  }
+
+  .perfil-header h1 {
+    font-size: 25px;
+  }
+
+  .perfil-datos {
+    grid-template-columns: 1fr;
+  }
+}

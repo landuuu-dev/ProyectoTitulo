@@ -4,7 +4,6 @@ import "./estilosPages/panelAdministracion.css";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const ESTADOS_MODERACION = ["Pendiente", "Aprobado", "Rechazado"];
-
 const FUENTES_ORIGEN = ["Manual", "Importado"];
 
 const SITIO_VACIO = {
@@ -50,6 +49,31 @@ export default function PanelAdministracion() {
   const [formEvento, setFormEvento] = useState(EVENTO_VACIO);
 
   const [confirmarId, setConfirmarId] = useState(null);
+
+  // =========================================================
+  // OBTENER TOKEN
+  // =========================================================
+
+  const obtenerToken = () => {
+    return sessionStorage.getItem("token");
+  };
+
+  // =========================================================
+  // HEADERS DE AUTENTICACIÓN
+  // =========================================================
+
+  const authHeaders = () => {
+    const token = obtenerToken();
+
+    return {
+      "Content-Type": "application/json",
+      ...(token
+        ? {
+            Authorization: `Bearer ${token}`,
+          }
+        : {}),
+    };
+  };
 
   // =========================================================
   // CARGAR SITIOS
@@ -147,7 +171,7 @@ export default function PanelAdministracion() {
   }
 
   // =========================================================
-  // ABRIR FORMULARIO PARA CREAR
+  // ABRIR FORMULARIO CREAR
   // =========================================================
 
   function abrirCrear() {
@@ -155,9 +179,13 @@ export default function PanelAdministracion() {
     setIdEnEdicion(null);
 
     if (vista === "sitios") {
-      setFormSitio(SITIO_VACIO);
+      setFormSitio({
+        ...SITIO_VACIO,
+      });
     } else {
-      setFormEvento(EVENTO_VACIO);
+      setFormEvento({
+        ...EVENTO_VACIO,
+      });
     }
 
     setError("");
@@ -166,7 +194,7 @@ export default function PanelAdministracion() {
   }
 
   // =========================================================
-  // ABRIR FORMULARIO PARA EDITAR
+  // ABRIR FORMULARIO EDITAR
   // =========================================================
 
   function abrirEditar(item) {
@@ -190,7 +218,6 @@ export default function PanelAdministracion() {
 
       let fecha = item.fecha_inicio || "";
 
-      // Adaptar fecha ISO para datetime-local
       if (fecha && fecha.includes("T")) {
         fecha = fecha.slice(0, 16);
       }
@@ -217,17 +244,25 @@ export default function PanelAdministracion() {
   // =========================================================
 
   function cerrarFormulario() {
-    if (guardando) return;
+    if (guardando) {
+      return;
+    }
 
     setFormAbierto(false);
     setModoEdicion(false);
     setIdEnEdicion(null);
-    setFormSitio(SITIO_VACIO);
-    setFormEvento(EVENTO_VACIO);
+
+    setFormSitio({
+      ...SITIO_VACIO,
+    });
+
+    setFormEvento({
+      ...EVENTO_VACIO,
+    });
   }
 
   // =========================================================
-  // CAMBIOS SITIO
+  // CAMBIO SITIO
   // =========================================================
 
   function cambiarSitio(e) {
@@ -240,7 +275,7 @@ export default function PanelAdministracion() {
   }
 
   // =========================================================
-  // CAMBIOS EVENTO
+  // CAMBIO EVENTO
   // =========================================================
 
   function cambiarEvento(e) {
@@ -262,14 +297,63 @@ export default function PanelAdministracion() {
     setMensaje("");
 
     try {
+      const token = obtenerToken();
+
+      if (!token) {
+        throw new Error("No hay una sesión activa. Inicia sesión nuevamente.");
+      }
+
       let url;
       let method;
       let body;
 
+      // =====================================================
+      // SITIO
+      // =====================================================
+
       if (vista === "sitios") {
+        // -----------------------------------------
+        // VALIDAR CAMPOS OBLIGATORIOS
+        // -----------------------------------------
+
         if (!formSitio.titulo_es.trim()) {
           throw new Error("El título en español es obligatorio.");
         }
+
+        if (!formSitio.titulo_en.trim()) {
+          throw new Error("El título en inglés es obligatorio.");
+        }
+
+        if (!formSitio.descripcion_es.trim()) {
+          throw new Error("La descripción en español es obligatoria.");
+        }
+
+        if (!formSitio.descripcion_en.trim()) {
+          throw new Error("La descripción en inglés es obligatoria.");
+        }
+
+        if (formSitio.latitud === "") {
+          throw new Error("La latitud es obligatoria.");
+        }
+
+        if (formSitio.longitud === "") {
+          throw new Error("La longitud es obligatoria.");
+        }
+
+        const latitud = Number(formSitio.latitud);
+        const longitud = Number(formSitio.longitud);
+
+        if (Number.isNaN(latitud)) {
+          throw new Error("La latitud debe ser un número válido.");
+        }
+
+        if (Number.isNaN(longitud)) {
+          throw new Error("La longitud debe ser un número válido.");
+        }
+
+        // -----------------------------------------
+        // URL
+        // -----------------------------------------
 
         url = modoEdicion
           ? `${API_URL}/sitios/${idEnEdicion}`
@@ -277,18 +361,26 @@ export default function PanelAdministracion() {
 
         method = modoEdicion ? "PUT" : "POST";
 
+        // -----------------------------------------
+        // BODY
+        // -----------------------------------------
+
         body = {
-          titulo_es: formSitio.titulo_es,
-          titulo_en: formSitio.titulo_en,
-          descripcion_es: formSitio.descripcion_es,
-          descripcion_en: formSitio.descripcion_en,
-          latitud: formSitio.latitud === "" ? null : Number(formSitio.latitud),
-          longitud:
-            formSitio.longitud === "" ? null : Number(formSitio.longitud),
-          imagen_url: formSitio.imagen_url,
-          audioguia_url: formSitio.audioguia_url,
+          titulo_es: formSitio.titulo_es.trim(),
+          titulo_en: formSitio.titulo_en.trim(),
+          descripcion_es: formSitio.descripcion_es.trim(),
+          descripcion_en: formSitio.descripcion_en.trim(),
+          latitud,
+          longitud,
+          imagen_url: formSitio.imagen_url.trim(),
+          audioguia_url: formSitio.audioguia_url.trim(),
         };
-      } else {
+      }
+
+      // =====================================================
+      // EVENTO
+      // =====================================================
+      else {
         if (!formEvento.titulo.trim()) {
           throw new Error("El título del evento es obligatorio.");
         }
@@ -304,15 +396,20 @@ export default function PanelAdministracion() {
         method = modoEdicion ? "PUT" : "POST";
 
         body = {
-          titulo: formEvento.titulo,
-          descripcion: formEvento.descripcion,
-          lugar: formEvento.lugar,
+          titulo: formEvento.titulo.trim(),
+          descripcion: formEvento.descripcion.trim(),
+          lugar: formEvento.lugar.trim(),
+
           fecha_inicio: formEvento.fecha_inicio
             ? new Date(formEvento.fecha_inicio).toISOString()
             : null,
-          imagen_url: formEvento.imagen_url,
+
+          imagen_url: formEvento.imagen_url.trim(),
+
           estado_moderacion: formEvento.estado_moderacion,
+
           fuente_origen: formEvento.fuente_origen,
+
           id_categoria:
             formEvento.id_categoria === ""
               ? null
@@ -320,13 +417,25 @@ export default function PanelAdministracion() {
         };
       }
 
+      // =====================================================
+      // PETICIÓN
+      // =====================================================
+
+      console.log("Enviando:", {
+        url,
+        method,
+        body,
+      });
+
       const res = await fetch(url, {
         method,
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: authHeaders(),
         body: JSON.stringify(body),
       });
+
+      // =====================================================
+      // ERROR
+      // =====================================================
 
       if (!res.ok) {
         let mensajeError = "No se pudo guardar la información.";
@@ -334,25 +443,46 @@ export default function PanelAdministracion() {
         try {
           const errorData = await res.json();
 
+          console.error("Respuesta del backend:", errorData);
+
           if (errorData.message) {
             mensajeError = errorData.message;
+          } else if (errorData.mensaje) {
+            mensajeError = errorData.mensaje;
           } else if (errorData.error) {
             mensajeError = errorData.error;
           }
         } catch {
-          // El backend no devolvió JSON
+          console.error("El backend no devolvió JSON.");
+        }
+
+        if (res.status === 400) {
+          mensajeError = mensajeError || "Los datos enviados no son válidos.";
+        }
+
+        if (res.status === 401 || res.status === 403) {
+          mensajeError =
+            "Acceso denegado. Tu sesión no es válida o no tienes permisos.";
         }
 
         throw new Error(mensajeError);
       }
 
+      // =====================================================
+      // ÉXITO
+      // =====================================================
+
+      const mensajeExito = modoEdicion
+        ? "Información actualizada correctamente."
+        : "Información creada correctamente.";
+
       cerrarFormulario();
 
-      setMensaje(
-        modoEdicion
-          ? "Información actualizada correctamente."
-          : "Información creada correctamente.",
-      );
+      setMensaje(mensajeExito);
+
+      // =====================================================
+      // RECARGAR
+      // =====================================================
 
       if (vista === "sitios") {
         await cargarSitios();
@@ -361,6 +491,7 @@ export default function PanelAdministracion() {
       }
     } catch (e) {
       console.error(e);
+
       setError(e.message || "Ocurrió un error al guardar.");
     } finally {
       setGuardando(false);
@@ -372,13 +503,21 @@ export default function PanelAdministracion() {
   // =========================================================
 
   async function eliminar() {
-    if (!confirmarId) return;
+    if (confirmarId === null) {
+      return;
+    }
 
     setGuardando(true);
     setError("");
     setMensaje("");
 
     try {
+      const token = obtenerToken();
+
+      if (!token) {
+        throw new Error("No hay una sesión activa. Inicia sesión nuevamente.");
+      }
+
       const endpoint =
         vista === "sitios"
           ? `${API_URL}/sitios/${confirmarId}`
@@ -386,6 +525,7 @@ export default function PanelAdministracion() {
 
       const res = await fetch(endpoint, {
         method: "DELETE",
+        headers: authHeaders(),
       });
 
       if (!res.ok) {
@@ -396,11 +536,18 @@ export default function PanelAdministracion() {
 
           if (errorData.message) {
             mensajeError = errorData.message;
+          } else if (errorData.mensaje) {
+            mensajeError = errorData.mensaje;
           } else if (errorData.error) {
             mensajeError = errorData.error;
           }
         } catch {
-          // Sin respuesta JSON
+          console.error("Sin respuesta JSON.");
+        }
+
+        if (res.status === 401 || res.status === 403) {
+          mensajeError =
+            "Acceso denegado. Tu sesión no es válida o no tienes permisos.";
         }
 
         throw new Error(mensajeError);
@@ -421,6 +568,7 @@ export default function PanelAdministracion() {
       }
     } catch (e) {
       console.error(e);
+
       setError(e.message || "Ocurrió un error al eliminar.");
     } finally {
       setGuardando(false);
@@ -428,7 +576,7 @@ export default function PanelAdministracion() {
   }
 
   // =========================================================
-  // NOMBRE DE CATEGORÍA
+  // NOMBRE CATEGORÍA
   // =========================================================
 
   function nombreCategoria(id) {
@@ -438,7 +586,7 @@ export default function PanelAdministracion() {
 
     const categoria = categorias.find((c) => c.id_categoria === Number(id));
 
-    return categoria?.nombre_categoria ?? "—";
+    return categoria?.nombre_categoria || "—";
   }
 
   // =========================================================
@@ -446,7 +594,9 @@ export default function PanelAdministracion() {
   // =========================================================
 
   function formatearFecha(fecha) {
-    if (!fecha) return "—";
+    if (!fecha) {
+      return "—";
+    }
 
     const fechaObj = new Date(fecha);
 
@@ -482,7 +632,7 @@ export default function PanelAdministracion() {
       </header>
 
       {/* =====================================================
-          NAVEGACIÓN
+          TABS
       ===================================================== */}
 
       <nav className="pa-tabs">
@@ -502,12 +652,10 @@ export default function PanelAdministracion() {
       </nav>
 
       {/* =====================================================
-          CONTENIDO
+          MAIN
       ===================================================== */}
 
       <main className="pa-main">
-        {/* TOOLBAR */}
-
         <div className="pa-toolbar">
           <div>
             <h2>
@@ -526,7 +674,9 @@ export default function PanelAdministracion() {
           </button>
         </div>
 
-        {/* MENSAJES */}
+        {/* ===================================================
+            MENSAJES
+        =================================================== */}
 
         {mensaje && (
           <div className="pa-alert pa-alert-success">
@@ -754,7 +904,7 @@ export default function PanelAdministracion() {
       </main>
 
       {/* =====================================================
-          MODAL FORMULARIO
+          MODAL CREAR / EDITAR
       ===================================================== */}
 
       {formAbierto && (
@@ -808,7 +958,7 @@ export default function PanelAdministracion() {
                   </div>
 
                   <div className="pa-form-group">
-                    <label>Título en inglés</label>
+                    <label>Título en inglés *</label>
 
                     <input
                       type="text"
@@ -821,7 +971,7 @@ export default function PanelAdministracion() {
                 </div>
 
                 <div className="pa-form-group">
-                  <label>Descripción en español</label>
+                  <label>Descripción en español *</label>
 
                   <textarea
                     name="descripcion_es"
@@ -833,7 +983,7 @@ export default function PanelAdministracion() {
                 </div>
 
                 <div className="pa-form-group">
-                  <label>Descripción en inglés</label>
+                  <label>Descripción en inglés *</label>
 
                   <textarea
                     name="descripcion_en"
@@ -846,7 +996,7 @@ export default function PanelAdministracion() {
 
                 <div className="pa-form-grid">
                   <div className="pa-form-group">
-                    <label>Latitud</label>
+                    <label>Latitud *</label>
 
                     <input
                       type="number"
@@ -859,7 +1009,7 @@ export default function PanelAdministracion() {
                   </div>
 
                   <div className="pa-form-group">
-                    <label>Longitud</label>
+                    <label>Longitud *</label>
 
                     <input
                       type="number"
@@ -1022,7 +1172,9 @@ export default function PanelAdministracion() {
               </div>
             )}
 
-            {/* ACCIONES */}
+            {/* =================================================
+                ACCIONES
+            ================================================= */}
 
             <div className="pa-form-actions">
               <button
@@ -1050,7 +1202,7 @@ export default function PanelAdministracion() {
       )}
 
       {/* =====================================================
-          MODAL CONFIRMACIÓN
+          MODAL ELIMINAR
       ===================================================== */}
 
       {confirmarId !== null && (
