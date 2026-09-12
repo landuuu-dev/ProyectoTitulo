@@ -1,3 +1,5 @@
+import { EventosRepository } from "../repositories/eventos.repository";
+
 // Listar eventos
 export const getEventos = async (req, res) => {
   try {
