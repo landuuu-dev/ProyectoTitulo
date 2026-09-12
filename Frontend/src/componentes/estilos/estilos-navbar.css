@@ -1,0 +1,100 @@
+/* RESET BÁSICO Y ESTILOS DELNAVBAR */
+
+body {
+  margin: 0;
+  padding-top: 100px; /* Desplaza el contenido hacia abajo para que el navbar no lo tape */
+}
+.nav {
+  position: fixed;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 1100px;
+  z-index: 1000;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 8px 16px;
+  background-color: rgba(
+    200,
+    230,
+    201,
+    0.85
+  ); /* Verde menta claro semi-transparente */
+  backdrop-filter: blur(8px); /* Efecto desfoque de fondo */
+  border-radius: 40px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+/* LOGO / NOMBRE DEL SITIO */
+.nav .logo {
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #2e4d32;
+  text-decoration: none;
+  line-height: 1.2;
+  max-width: 120px;
+  padding-left: 20px;
+}
+
+/* LISTA DE NAVEGACIÓN */
+.nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ENLACES NORMALES */
+.nav .boton-1 {
+  text-decoration: none;
+  color: #2e4d32;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 8px 12px;
+  text-align: center;
+  display: inline-block;
+  line-height: 1.2;
+  transition: opacity 0.2s ease;
+}
+
+.nav .boton-1:hover {
+  opacity: 0.75;
+}
+
+/* BOTONES DE AUTENTICACIÓN (PÍLDORAS VERDES MÁS OSCURAS) */
+.nav .boton-auth {
+  text-decoration: none;
+  color: #ffffff;
+  background-color: #81c784; /* Verde mas intenso para los botones destacados */
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 20px;
+  display: inline-block;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
+}
+
+.nav .boton-auth:hover {
+  background-color: #66bb6a;
+}
