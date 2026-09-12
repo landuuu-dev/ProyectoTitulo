@@ -1,5 +1,3 @@
-import { pool } from "../db.js";
-
 export const EventosRepository = {
   // Listar todos los eventos
   async getEventos() {
@@ -12,6 +10,7 @@ export const EventosRepository = {
         e.fecha_inicio,
         e.estado_moderacion,
         e.fuente_origen,
+        e.imagen_url,
         e.id_categoria,
         c.nombre_categoria
       FROM eventos_culturales e
@@ -32,6 +31,7 @@ export const EventosRepository = {
         e.fecha_inicio,
         e.estado_moderacion,
         e.fuente_origen,
+        e.imagen_url,
         e.id_categoria,
         c.nombre_categoria
       FROM eventos_culturales e
@@ -50,6 +50,7 @@ export const EventosRepository = {
     fecha_inicio,
     estado_moderacion = "Pendiente",
     fuente_origen = "Manual",
+    imagen_url,
     id_categoria,
   }) {
     const result = await pool.query(
@@ -60,9 +61,10 @@ export const EventosRepository = {
         fecha_inicio, 
         estado_moderacion, 
         fuente_origen, 
+        imagen_url,
         id_categoria
       ) 
-      VALUES ($1, $2, $3, $4, $5, $6, $7) 
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
       RETURNING *`,
       [
         titulo,
@@ -71,6 +73,7 @@ export const EventosRepository = {
         fecha_inicio,
         estado_moderacion,
         fuente_origen,
+        imagen_url,
         id_categoria,
       ],
     );
@@ -87,6 +90,7 @@ export const EventosRepository = {
       fecha_inicio,
       estado_moderacion,
       fuente_origen,
+      imagen_url,
       id_categoria,
     },
   ) {
@@ -99,8 +103,9 @@ export const EventosRepository = {
          fecha_inicio = $4,
          estado_moderacion = $5,
          fuente_origen = $6,
-         id_categoria = $7
-       WHERE id_evento = $8
+         imagen_url = $7,
+         id_categoria = $8
+       WHERE id_evento = $9
        RETURNING *`,
       [
         titulo,
@@ -109,6 +114,7 @@ export const EventosRepository = {
         fecha_inicio,
         estado_moderacion,
         fuente_origen,
+        imagen_url,
         id_categoria,
         id,
       ],
@@ -116,7 +122,7 @@ export const EventosRepository = {
     return result.rows[0] || null;
   },
 
-  // Eliminar evento por ID
+  // Eliminar evento por ID (sin cambios)
   async delete(id) {
     const result = await pool.query(
       `DELETE FROM eventos_culturales 
