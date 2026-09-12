@@ -1,13 +1,17 @@
 /* =========================================================
-   SITIOS - PÁGINA
+   EVENTOS - PÁGINA
 ========================================================= */
 
-.sitios-pagina {
+.eventos-pagina {
   width: 100%;
   min-height: 100vh;
+
   margin: 0;
+
   background: #fafaf8;
+
   font-family: Arial, Helvetica, sans-serif;
+
   color: #202020;
 }
 
@@ -15,8 +19,9 @@
    HERO CON CERRO
 ========================================================= */
 
-.sitios-hero {
+.eventos-hero {
   position: relative;
+
   width: 100%;
   min-height: 360px;
 
@@ -30,8 +35,11 @@
   overflow: hidden;
 }
 
-.sitios-hero__overlay {
+/* Oscurecer imagen */
+
+.eventos-hero__overlay {
   position: absolute;
+
   inset: 0;
 
   background: linear-gradient(
@@ -42,8 +50,11 @@
   );
 }
 
-.sitios-hero__contenido {
+/* Contenido */
+
+.eventos-hero__contenido {
   position: relative;
+
   z-index: 2;
 
   width: 100%;
@@ -52,16 +63,21 @@
   padding: 80px 40px;
 
   text-align: center;
+
   color: #ffffff;
 }
 
-.sitios-hero__etiqueta {
+/* Etiqueta */
+
+.eventos-hero__etiqueta {
   display: inline-block;
 
   margin-bottom: 18px;
+
   padding: 8px 18px;
 
   background: #d4ead4;
+
   border-radius: 999px;
 
   color: #304f35;
@@ -72,15 +88,19 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
-.sitios-titulo {
+/* Título */
+
+.eventos-titulo {
   margin: 0 0 15px;
 
   font-family: Georgia, "Times New Roman", serif;
 
   font-size: clamp(38px, 6vw, 58px);
+
   line-height: 1.1;
 
   font-weight: 700;
+
   color: #ffffff;
 
   text-shadow:
@@ -88,12 +108,15 @@
     0 1px 3px rgba(0, 0, 0, 0.9);
 }
 
-.sitios-hero__descripcion {
+/* Descripción */
+
+.eventos-hero__descripcion {
   max-width: 550px;
 
   margin: 0 auto;
 
   font-size: 17px;
+
   line-height: 1.6;
 
   color: #ffffff;
@@ -102,10 +125,10 @@
 }
 
 /* =========================================================
-   BUSCADOR
+   FILTROS
 ========================================================= */
 
-.sitios-buscador-contenedor {
+.eventos-filtro {
   width: 100%;
   max-width: 1100px;
 
@@ -114,7 +137,9 @@
   padding: 35px 40px 20px;
 }
 
-.sitios-buscador-label {
+/* Título filtro */
+
+.eventos-filtro-label {
   display: block;
 
   margin-bottom: 12px;
@@ -122,23 +147,39 @@
   color: #304f35;
 
   font-size: 15px;
+
   font-weight: 700;
 }
 
-.sitios-buscador {
+/* Fila */
+
+.eventos-filtro-fila {
+  display: flex;
+
+  gap: 14px;
+
   width: 100%;
-  min-height: 52px;
+}
+
+/* Campo */
+
+.eventos-filtro-campo {
+  flex: 1;
+
+  min-height: 50px;
 
   display: flex;
+
   align-items: center;
 
-  gap: 10px;
+  gap: 9px;
 
-  padding: 0 18px;
+  padding: 0 17px;
 
   background: #ffffff;
 
   border: 1px solid #d7dfd5;
+
   border-radius: 999px;
 
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
@@ -148,18 +189,23 @@
     box-shadow 0.2s ease;
 }
 
-.sitios-buscador:focus-within {
+.eventos-filtro-campo:focus-within {
   border-color: #5b8c5a;
 
   box-shadow: 0 0 0 3px rgba(91, 140, 90, 0.12);
 }
 
-.sitios-buscador-icono {
-  font-size: 16px;
+/* Icono */
+
+.eventos-filtro-icono {
+  font-size: 15px;
+
   opacity: 0.7;
 }
 
-.sitios-buscador-input {
+/* Input */
+
+.eventos-filtro-input {
   width: 100%;
   min-width: 0;
 
@@ -169,20 +215,21 @@
   background: transparent;
 
   font-family: inherit;
+
   font-size: 14px;
 
-  color: #333333;
+  color: #333;
 }
 
-.sitios-buscador-input::placeholder {
-  color: #999999;
+.eventos-filtro-input::placeholder {
+  color: #999;
 }
 
 /* =========================================================
-   LISTA DE SITIOS
+   LISTA DE EVENTOS
 ========================================================= */
 
-.sitios-lista {
+.eventos-lista {
   width: 100%;
   max-width: 1100px;
 
@@ -201,8 +248,9 @@
    TARJETA
 ========================================================= */
 
-.sitio-tarjeta {
+.evento-tarjeta {
   display: flex;
+
   flex-direction: column;
 
   overflow: hidden;
@@ -218,7 +266,7 @@
     box-shadow 0.25s ease;
 }
 
-.sitio-tarjeta:hover {
+.evento-tarjeta:hover {
   transform: translateY(-5px);
 
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
@@ -228,8 +276,9 @@
    IMAGEN
 ========================================================= */
 
-.sitio-imagen-wrap {
+.evento-imagen-wrap {
   width: 100%;
+
   height: 230px;
 
   overflow: hidden;
@@ -237,7 +286,7 @@
   background: #dddddd;
 }
 
-.sitio-imagen {
+.evento-imagen {
   width: 100%;
   height: 100%;
 
@@ -248,43 +297,33 @@
   transition: transform 0.4s ease;
 }
 
-.sitio-tarjeta:hover .sitio-imagen {
+.evento-tarjeta:hover .evento-imagen {
   transform: scale(1.04);
-}
-
-.sitio-placeholder {
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: #e9eee8;
-
-  color: #6c786c;
-
-  font-size: 14px;
 }
 
 /* =========================================================
    INFORMACIÓN
 ========================================================= */
 
-.sitio-info {
+.evento-info {
   flex: 1;
 
   display: flex;
+
   flex-direction: column;
+
   align-items: flex-start;
 
   padding: 22px;
 }
 
-.sitio-nombre {
+/* Título */
+
+.evento-nombre {
   margin: 0 0 10px;
 
   font-size: 21px;
+
   line-height: 1.3;
 
   font-weight: 700;
@@ -292,16 +331,21 @@
   color: #304f35;
 }
 
-.sitio-descripcion {
+/* Descripción */
+
+.evento-descripcion {
   margin: 0 0 20px;
 
   font-size: 14px;
+
   line-height: 1.55;
 
-  color: #666666;
+  color: #666;
 
   display: -webkit-box;
+
   -webkit-line-clamp: 3;
+
   -webkit-box-orient: vertical;
 
   overflow: hidden;
@@ -311,12 +355,13 @@
    BOTÓN
 ========================================================= */
 
-.sitio-boton {
+.evento-boton {
   margin-top: auto;
 
   padding: 11px 22px;
 
   border: none;
+
   border-radius: 10px;
 
   background-color: #5b8c5a;
@@ -326,6 +371,7 @@
   font-family: inherit;
 
   font-size: 14px;
+
   font-weight: 600;
 
   cursor: pointer;
@@ -336,7 +382,7 @@
     box-shadow 0.2s ease;
 }
 
-.sitio-boton:hover {
+.evento-boton:hover {
   background-color: #456f46;
 
   transform: translateY(-1px);
@@ -344,11 +390,11 @@
   box-shadow: 0 5px 12px rgba(0, 0, 0, 0.12);
 }
 
-.sitio-boton:active {
+.evento-boton:active {
   transform: translateY(0);
 }
 
-.sitio-boton:focus-visible {
+.evento-boton:focus-visible {
   outline: 3px solid rgba(91, 140, 90, 0.35);
 
   outline-offset: 3px;
@@ -359,19 +405,19 @@
 ========================================================= */
 
 @media (max-width: 899px) {
-  .sitios-hero {
+  .eventos-hero {
     min-height: 330px;
   }
 
-  .sitios-hero__contenido {
+  .eventos-hero__contenido {
     padding: 70px 30px;
   }
 
-  .sitios-buscador-contenedor {
+  .eventos-filtro {
     padding: 30px 30px 15px;
   }
 
-  .sitios-lista {
+  .eventos-lista {
     padding: 20px 30px 60px;
 
     grid-template-columns: repeat(2, 1fr);
@@ -379,7 +425,7 @@
     gap: 20px;
   }
 
-  .sitio-imagen-wrap {
+  .evento-imagen-wrap {
     height: 210px;
   }
 }
@@ -389,47 +435,53 @@
 ========================================================= */
 
 @media (max-width: 599px) {
-  .sitios-hero {
+  .eventos-hero {
     min-height: 390px;
 
     background-position: center;
   }
 
-  .sitios-hero__contenido {
+  .eventos-hero__contenido {
     padding: 80px 24px 60px;
   }
 
-  .sitios-hero__etiqueta {
+  .eventos-hero__etiqueta {
     padding: 7px 15px;
 
     font-size: 12px;
   }
 
-  .sitios-titulo {
+  .eventos-titulo {
     font-size: 38px;
   }
 
-  .sitios-hero__descripcion {
+  .eventos-hero__descripcion {
     font-size: 14px;
   }
 
-  /* Buscador */
+  /* Filtro */
 
-  .sitios-buscador-contenedor {
+  .eventos-filtro {
     padding: 25px 20px 10px;
   }
 
-  .sitios-buscador-label {
+  .eventos-filtro-label {
     text-align: center;
   }
 
-  .sitios-buscador {
+  .eventos-filtro-fila {
+    flex-direction: column;
+
+    gap: 10px;
+  }
+
+  .eventos-filtro-campo {
     min-height: 48px;
   }
 
-  /* Tarjetas */
+  /* Lista */
 
-  .sitios-lista {
+  .eventos-lista {
     grid-template-columns: 1fr;
 
     padding: 20px 20px 50px;
@@ -437,23 +489,25 @@
     gap: 20px;
   }
 
-  .sitio-imagen-wrap {
+  /* Tarjeta */
+
+  .evento-imagen-wrap {
     height: 220px;
   }
 
-  .sitio-info {
+  .evento-info {
     padding: 20px;
   }
 
-  .sitio-nombre {
+  .evento-nombre {
     font-size: 20px;
   }
 
-  .sitio-descripcion {
+  .evento-descripcion {
     font-size: 14px;
   }
 
-  .sitio-boton {
+  .evento-boton {
     width: 100%;
 
     text-align: center;

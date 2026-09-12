@@ -1,0 +1,1209 @@
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+.home {
+  width: 100%;
+  margin: 0 auto;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #202020;
+  background: #ffffff;
+}
+
+.home img {
+  display: block;
+  max-width: 100%;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+  position: relative;
+  min-height: 560px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Imagen */
+
+.hero__imagen {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  z-index: -2;
+}
+
+.hero__imagen img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Oscurecer imagen */
+
+.hero::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.68) 0%,
+    rgba(0, 0, 0, 0.45) 45%,
+    rgba(0, 0, 0, 0.12) 100%
+  );
+
+  z-index: -1;
+}
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.hero::before {
+  content: "Rastros del\A desierto";
+  white-space: pre;
+
+  position: absolute;
+
+  top: 28px;
+  left: 40px;
+
+  width: 145px;
+  min-height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 8px 14px;
+
+  background: #d4ead4;
+  color: #304f35;
+
+  border-radius: 30px;
+
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.1;
+
+  text-align: center;
+
+  z-index: 10;
+
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* =========================================================
+   CONTENIDO HERO
+========================================================= */
+
+.hero__contenido {
+  width: 100%;
+  max-width: 1200px;
+
+  min-height: 560px;
+
+  margin: 0 auto;
+
+  padding: 120px 60px 80px;
+
+  display: flex;
+  align-items: center;
+}
+
+.hero__texto {
+  width: 60%;
+  max-width: 680px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  text-align: left;
+
+  color: white;
+
+  z-index: 3;
+}
+
+/* =========================================================
+   TÍTULO
+========================================================= */
+
+.hero__texto h1 {
+  margin: 0 0 24px;
+
+  font-size: clamp(38px, 5vw, 64px);
+
+  line-height: 1.05;
+
+  font-weight: 800;
+
+  color: #ffffff;
+
+  text-shadow:
+    0 3px 10px rgba(0, 0, 0, 0.7),
+    0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+/* =========================================================
+   DESCRIPCIÓN HERO
+========================================================= */
+
+.hero__texto p {
+  display: block;
+
+  max-width: 570px;
+
+  margin: 0 0 32px;
+
+  font-size: 18px;
+
+  line-height: 1.6;
+
+  color: #ffffff;
+
+  text-shadow: 0 2px 7px rgba(0, 0, 0, 0.7);
+}
+
+/* =========================================================
+   BUSCADOR
+========================================================= */
+
+.hero__buscador {
+  width: 100%;
+  max-width: 510px;
+
+  height: 60px;
+
+  display: flex;
+  align-items: center;
+
+  background: #ffffff;
+
+  border: 3px solid rgba(255, 255, 255, 0.9);
+
+  border-radius: 32px;
+
+  overflow: hidden;
+
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+.hero__buscador input {
+  flex: 1;
+
+  width: 100%;
+  height: 100%;
+
+  padding: 0 22px;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  font-family: inherit;
+  font-size: 16px;
+
+  color: #333;
+}
+
+.hero__buscador input::placeholder {
+  color: #777;
+}
+
+.hero__buscador button {
+  width: 60px;
+  height: 60px;
+
+  flex-shrink: 0;
+
+  border: none;
+
+  background: #d4ead4;
+  color: #304f35;
+
+  font-size: 22px;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.hero__buscador button:hover {
+  background: #b9d9b9;
+}
+
+/* =========================================================
+   SECCIONES
+========================================================= */
+
+.agenda,
+.lugares,
+.offline {
+  width: 100%;
+}
+
+.section__header {
+  max-width: 1200px;
+
+  margin: 0 auto;
+
+  padding: 70px 50px 35px;
+}
+
+.section__header h2 {
+  margin: 0 0 12px;
+
+  font-size: 32px;
+
+  line-height: 1.2;
+
+  font-weight: 700;
+
+  color: #304f35;
+}
+
+.section__header p {
+  max-width: 650px;
+
+  margin: 0;
+
+  font-size: 16px;
+
+  line-height: 1.6;
+
+  color: #666;
+}
+
+/* =========================================================
+   AGENDA CULTURAL
+========================================================= */
+
+.agenda {
+  position: relative;
+
+  padding: 70px 50px 90px;
+
+  background: #ffffff;
+
+  overflow: hidden;
+}
+
+/* Decoración verde */
+
+.agenda::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 180px;
+
+  width: 55%;
+  height: 420px;
+
+  background: #cce8cc;
+
+  border-radius: 0 220px 220px 0;
+
+  z-index: 0;
+}
+
+/* Contenedor */
+
+.agenda .section__header {
+  position: relative;
+
+  z-index: 2;
+
+  max-width: 1200px;
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns: 1fr 360px;
+
+  gap: 80px;
+
+  align-items: center;
+}
+
+/* Texto */
+
+.agenda__texto {
+  padding-left: 20px;
+}
+
+.agenda__texto h2 {
+  margin: 0 0 15px;
+
+  font-size: 32px;
+
+  line-height: 1.2;
+
+  color: #304f35;
+}
+
+.agenda__texto p {
+  max-width: 400px;
+
+  margin: 0;
+
+  font-size: 16px;
+
+  line-height: 1.6;
+
+  color: #666;
+}
+
+/* =========================================================
+   TARJETA EVENTO
+========================================================= */
+
+.evento__card {
+  width: 100%;
+  max-width: 360px;
+
+  background: #ffffff;
+
+  border-radius: 18px;
+
+  overflow: hidden;
+
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.evento__card:hover {
+  transform: translateY(-6px);
+
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Imagen evento */
+
+.evento__card .sitio__imagen {
+  width: 100%;
+  height: 210px;
+
+  overflow: hidden;
+}
+
+.evento__card .sitio__imagen img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  display: block;
+
+  transition: transform 0.4s ease;
+}
+
+.evento__card:hover .sitio__imagen img {
+  transform: scale(1.05);
+}
+
+/* Contenido */
+
+.evento__card .sitio__contenido {
+  padding: 22px;
+}
+
+.evento__card .sitio__categoria {
+  display: inline-block;
+
+  margin-bottom: 8px;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  color: #5b8c5a;
+}
+
+.evento__card h3 {
+  margin: 0 0 10px;
+
+  font-size: 21px;
+
+  line-height: 1.3;
+
+  color: #304f35;
+}
+
+.evento__card p {
+  margin: 0 0 15px;
+
+  font-size: 14px;
+
+  line-height: 1.5;
+
+  color: #666;
+
+  display: -webkit-box;
+
+  -webkit-line-clamp: 3;
+
+  -webkit-box-orient: vertical;
+
+  overflow: hidden;
+}
+
+/* Información evento */
+
+.evento__info {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+
+  margin-bottom: 18px;
+
+  font-size: 13px;
+
+  color: #555;
+}
+
+/* Botón evento */
+
+.evento__card .sitio__boton {
+  width: 100%;
+
+  padding: 11px 16px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #5b8c5a;
+
+  color: white;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+.evento__card .sitio__boton:hover {
+  background: #456f46;
+}
+
+/* =========================================================
+   MENSAJE VACÍO
+========================================================= */
+
+.mensaje-vacio {
+  padding: 30px;
+
+  text-align: center;
+
+  color: #777;
+}
+
+/* =========================================================
+   LUGARES TURÍSTICOS
+========================================================= */
+
+.lugares {
+  padding-bottom: 80px;
+
+  background: #fafaf8;
+}
+
+.lugares .section__header {
+  text-align: center;
+}
+
+.lugares .section__header p {
+  margin: 0 auto;
+}
+
+/* =========================================================
+   SITIOS
+========================================================= */
+
+.sitios__grid {
+  max-width: 1100px;
+
+  margin: 20px auto 0;
+
+  padding: 0 40px;
+
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 24px;
+}
+
+.sitio__card {
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border-radius: 16px;
+
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.1);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.sitio__card:hover {
+  transform: translateY(-5px);
+
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.14);
+}
+
+/* Imagen */
+
+.sitio__card img,
+.sitio__imagen-placeholder {
+  width: 100%;
+  height: 230px;
+
+  object-fit: cover;
+}
+
+.sitio__imagen-placeholder {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background: #dddddd;
+
+  font-size: 50px;
+}
+
+/* Contenido */
+
+.sitio__contenido {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+
+  padding: 20px;
+}
+
+.sitio__contenido h3 {
+  margin: 0;
+
+  font-size: 21px;
+
+  color: #304f35;
+}
+
+.sitio__contenido p {
+  margin: 0;
+
+  font-size: 14px;
+
+  line-height: 1.5;
+
+  color: #666;
+
+  display: -webkit-box;
+
+  -webkit-line-clamp: 3;
+
+  -webkit-box-orient: vertical;
+
+  overflow: hidden;
+}
+
+.sitio__ubicacion {
+  font-size: 13px;
+
+  color: #555;
+}
+
+/* =========================================================
+   BOTÓN LUGARES TURÍSTICOS
+========================================================= */
+
+.sitio__boton {
+  width: 100%;
+
+  margin-top: 8px;
+
+  padding: 11px 18px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #5b8c5a;
+
+  color: #ffffff;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.sitio__boton:hover {
+  background: #456f46;
+
+  transform: translateY(-1px);
+}
+
+.sitio__boton:active {
+  transform: translateY(0);
+}
+
+/* =========================================================
+   OFFLINE
+========================================================= */
+
+.offline {
+  padding: 80px 50px;
+
+  background: #ffffff;
+}
+
+.offline__contenido {
+  position: relative;
+
+  max-width: 1100px;
+
+  min-height: 360px;
+
+  margin: 0 auto;
+
+  display: flex;
+
+  align-items: center;
+
+  padding: 50px;
+
+  overflow: hidden;
+}
+
+/* Fondo verde */
+
+.offline__contenido::after {
+  content: "";
+
+  position: absolute;
+
+  right: 0;
+  top: 0;
+
+  width: 65%;
+  height: 100%;
+
+  background: #cce8cc;
+
+  border-radius: 200px 0 0 200px;
+
+  z-index: 0;
+}
+
+/* Mapa */
+
+.offline__contenido::before {
+  content: "";
+
+  position: absolute;
+
+  right: 80px;
+  top: 50%;
+
+  width: 260px;
+  height: 260px;
+
+  transform: translateY(-50%);
+
+  border-radius: 50%;
+
+  background-image: url("../../assets/mapa.png");
+
+  background-size: cover;
+
+  background-position: center;
+
+  z-index: 1;
+
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Texto */
+
+.offline__texto {
+  position: relative;
+
+  width: 48%;
+
+  z-index: 2;
+}
+
+.offline h2 {
+  margin: 0 0 18px;
+
+  font-size: 32px;
+
+  line-height: 1.2;
+
+  color: #304f35;
+}
+
+.offline p {
+  margin: 0 0 24px;
+
+  max-width: 300px;
+
+  font-size: 16px;
+
+  line-height: 1.6;
+
+  color: #555;
+}
+
+/* =========================================================
+   BOTÓN OFFLINE
+========================================================= */
+
+.offline__boton {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 12px 24px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #5b8c5a;
+
+  color: #ffffff;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.offline__boton:hover {
+  background: #456f46;
+
+  transform: translateY(-2px);
+
+  box-shadow: 0 7px 16px rgba(0, 0, 0, 0.16);
+}
+
+.offline__boton:active {
+  transform: translateY(0);
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer {
+  padding: 45px 30px;
+
+  background: #304f35;
+
+  color: white;
+
+  text-align: center;
+}
+
+.footer h2 {
+  margin: 0 0 10px;
+
+  font-size: 25px;
+
+  color: white;
+}
+
+.footer p {
+  margin: 0;
+
+  font-size: 14px;
+
+  color: #dce9dc;
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 899px) {
+  /* HERO */
+
+  .hero {
+    min-height: 520px;
+  }
+
+  .hero__contenido {
+    min-height: 520px;
+
+    padding: 120px 40px 60px;
+  }
+
+  .hero__texto {
+    width: 70%;
+  }
+
+  .hero__texto h1 {
+    font-size: 42px;
+  }
+
+  .hero__texto p {
+    font-size: 16px;
+  }
+
+  /* AGENDA */
+
+  .agenda {
+    padding: 60px 30px 70px;
+  }
+
+  .agenda .section__header {
+    grid-template-columns: 1fr 320px;
+
+    gap: 40px;
+  }
+
+  .evento__card {
+    max-width: 320px;
+  }
+
+  /* SITIOS */
+
+  .sitios__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* OFFLINE */
+
+  .offline__contenido {
+    padding: 40px;
+  }
+
+  .offline__contenido::before {
+    right: 40px;
+
+    width: 210px;
+    height: 210px;
+  }
+
+  .offline__texto {
+    width: 52%;
+  }
+}
+
+/* =========================================================
+   CELULAR
+========================================================= */
+
+@media (max-width: 599px) {
+  /* HERO */
+
+  .hero {
+    min-height: 620px;
+  }
+
+  .hero::before {
+    top: 20px;
+    left: 20px;
+
+    width: 125px;
+    min-height: 50px;
+
+    font-size: 12px;
+  }
+
+  .hero__contenido {
+    min-height: 620px;
+
+    padding: 120px 24px 50px;
+
+    align-items: center;
+  }
+
+  .hero__texto {
+    width: 100%;
+
+    align-items: center;
+
+    text-align: center;
+  }
+
+  .hero__texto h1 {
+    font-size: 34px;
+
+    line-height: 1.08;
+  }
+
+  .hero__texto p {
+    font-size: 15px;
+
+    line-height: 1.5;
+  }
+
+  .hero__buscador {
+    max-width: 100%;
+
+    height: 54px;
+  }
+
+  .hero__buscador input {
+    font-size: 14px;
+  }
+
+  .hero__buscador button {
+    width: 54px;
+    height: 54px;
+  }
+
+  /* SECCIONES */
+
+  .section__header {
+    padding: 50px 24px 25px;
+
+    text-align: center;
+  }
+
+  .section__header h2 {
+    font-size: 27px;
+  }
+
+  .section__header p {
+    font-size: 14px;
+  }
+
+  /* AGENDA */
+
+  .agenda {
+    padding: 50px 20px 50px;
+  }
+
+  .agenda::before {
+    width: 100%;
+
+    height: 250px;
+
+    top: 100px;
+
+    border-radius: 0 120px 120px 0;
+  }
+
+  .agenda .section__header {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 35px;
+  }
+
+  .agenda__texto {
+    padding-left: 0;
+  }
+
+  .agenda__texto h2 {
+    font-size: 28px;
+  }
+
+  .agenda__texto p {
+    max-width: 100%;
+  }
+
+  .evento__card {
+    max-width: 100%;
+
+    border-radius: 16px;
+  }
+
+  .evento__card .sitio__imagen {
+    height: 220px;
+  }
+
+  /* LUGARES */
+
+  .lugares {
+    padding-bottom: 50px;
+  }
+
+  .sitios__grid {
+    padding: 0 20px;
+
+    grid-template-columns: 1fr;
+
+    gap: 20px;
+  }
+
+  .sitio__card img,
+  .sitio__imagen-placeholder {
+    height: 210px;
+  }
+
+  /* OFFLINE */
+
+  .offline {
+    padding: 50px 20px;
+  }
+
+  .offline__contenido {
+    min-height: 560px;
+
+    padding: 35px 25px;
+
+    display: flex;
+
+    align-items: flex-start;
+  }
+
+  .offline__texto {
+    width: 100%;
+
+    text-align: center;
+  }
+
+  .offline h2 {
+    font-size: 27px;
+  }
+
+  .offline p {
+    max-width: 100%;
+
+    font-size: 14px;
+
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .offline__boton {
+    margin: 0 auto;
+  }
+
+  .offline__contenido::after {
+    top: auto;
+
+    bottom: 0;
+
+    width: 100%;
+
+    height: 55%;
+
+    border-radius: 120px 0 0 0;
+  }
+
+  .offline__contenido::before {
+    right: 50%;
+
+    top: auto;
+
+    bottom: 35px;
+
+    width: 190px;
+    height: 190px;
+
+    transform: translateX(50%);
+  }
+
+  /* FOOTER */
+
+  .footer {
+    padding: 35px 20px;
+  }
+
+  .footer h2 {
+    font-size: 22px;
+  }
+}
+
+/* =========================================================
+   FORZAR BOTONES VERDES
+========================================================= */
+
+/* Botones de lugares turísticos */
+.lugares button,
+.sitios__grid button {
+  background-color: #5b8c5a !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 10px !important;
+  padding: 11px 18px !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lugares button:hover,
+.sitios__grid button:hover {
+  background-color: #456f46 !important;
+  color: #ffffff !important;
+}
+
+/* Botón de Offline */
+.offline button,
+.offline a {
+  background-color: #5b8c5a !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 10px !important;
+  padding: 12px 24px !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.offline button:hover,
+.offline a:hover {
+  background-color: #456f46 !important;
+  color: #ffffff !important;
+}
