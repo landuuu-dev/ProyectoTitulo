@@ -1,14 +1,8 @@
-import { traducirTexto } from "../utils/traduccionService.js";
+import { traducirTexto, traducirTextos } from "../utils/traduccionService";
 
 export const traducir = async (req, res) => {
   try {
-    const { texto, idiomaOrigen, idiomaDestino } = req.body;
-
-    if (!texto) {
-      return res.status(400).json({
-        mensaje: "El texto es obligatorio.",
-      });
-    }
+    const { texto, textos, idiomaOrigen, idiomaDestino } = req.body;
 
     const idiomasPermitidos = ["ES", "EN"];
 
@@ -27,12 +21,38 @@ export const traducir = async (req, res) => {
       });
     }
 
-    const traduccion = await traducirTexto(texto, idiomaOrigen, idiomaDestino);
+    // Traducción de varios textos
+    if (Array.isArray(textos)) {
+      const traducciones = await traducirTextos(
+        textos,
+        idiomaOrigen,
+        idiomaDestino,
+      );
 
-    return res.status(200).json({
-      traduccion,
-      idiomaOrigen,
-      idiomaDestino,
+      return res.status(200).json({
+        traducciones,
+        idiomaOrigen,
+        idiomaDestino,
+      });
+    }
+
+    // Traducción de un solo texto
+    if (texto) {
+      const traduccion = await traducirTexto(
+        texto,
+        idiomaOrigen,
+        idiomaDestino,
+      );
+
+      return res.status(200).json({
+        traduccion,
+        idiomaOrigen,
+        idiomaDestino,
+      });
+    }
+
+    return res.status(400).json({
+      mensaje: "Debe proporcionar texto o textos.",
     });
   } catch (error) {
     console.error("ERROR COMPLETO DE TRADUCCIÓN:", error);
@@ -40,7 +60,6 @@ export const traducir = async (req, res) => {
     return res.status(500).json({
       mensaje: "Error al realizar la traducción.",
       error: error.message,
-      detalle: error.body || error.response?.data || null,
     });
   }
 };
