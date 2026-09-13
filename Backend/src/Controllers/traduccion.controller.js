@@ -35,10 +35,12 @@ export const traducir = async (req, res) => {
       idiomaDestino,
     });
   } catch (error) {
-    console.error("Error traduciendo:", error);
+    console.error("ERROR COMPLETO DE TRADUCCIÓN:", error);
 
     return res.status(500).json({
       mensaje: "Error al realizar la traducción.",
+      error: error.message,
+      detalle: error.body || error.response?.data || null,
     });
   }
 };
