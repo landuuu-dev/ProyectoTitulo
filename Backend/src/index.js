@@ -6,7 +6,7 @@ import eventosRoutes from "./Routes/eventos.routes.js";
 import categoriasRoutes from "./Routes/categoria.routes.js"; // <--- Importar la RUTA, no el controlador
 import favoritosRoutes from "./Routes/favoritos.routes.js"; // <--- Módulo de favoritos
 import cors from "cors";
-import traduccionRoutes from "./routes/traduccionRoutes.js";
+import traduccionRoutes from "./Routes/traduccion.routes.js";
 
 process.loadEnvFile();
 const PORT = process.env.PORT ?? 3000;
