@@ -10,6 +10,10 @@ if (!authKey) {
 
 const deeplClient = new deepl.DeepLClient(authKey);
 
+// =====================================================
+// UN TEXTO
+// =====================================================
+
 export const traducirTexto = async (texto, idiomaOrigen, idiomaDestino) => {
   if (!texto || !texto.trim()) {
     throw new Error("El texto a traducir es obligatorio.");
@@ -28,9 +32,21 @@ export const traducirTexto = async (texto, idiomaOrigen, idiomaDestino) => {
   return resultado.text;
 };
 
+// =====================================================
+// VARIOS TEXTOS
+// =====================================================
+
 export const traducirTextos = async (textos, idiomaOrigen, idiomaDestino) => {
   if (!Array.isArray(textos) || textos.length === 0) {
     throw new Error("Debe proporcionar una lista de textos.");
+  }
+
+  const textosLimpios = textos.filter(
+    (texto) => typeof texto === "string" && texto.trim().length > 0,
+  );
+
+  if (textosLimpios.length === 0) {
+    throw new Error("No hay textos válidos para traducir.");
   }
 
   const idiomaOrigenDeepL = idiomaOrigen === "ES" ? "es" : "en";
@@ -38,7 +54,7 @@ export const traducirTextos = async (textos, idiomaOrigen, idiomaDestino) => {
   const idiomaDestinoDeepL = idiomaDestino === "ES" ? "es" : "en-US";
 
   const resultados = await deeplClient.translateText(
-    textos,
+    textosLimpios,
     idiomaOrigenDeepL,
     idiomaDestinoDeepL,
   );

@@ -1,10 +1,23 @@
-import { traducirTexto, traducirTextos } from "../utils/traduccionService";
+import { traducirTexto, traducirTextos } from "../utils/traduccionService.js";
 
 export const traducir = async (req, res) => {
   try {
+    console.log("========== PETICIÓN TRADUCCIÓN ==========");
+
+    console.log("BODY RECIBIDO:", JSON.stringify(req.body, null, 2));
+
     const { texto, textos, idiomaOrigen, idiomaDestino } = req.body;
 
+    console.log("texto:", texto);
+    console.log("textos:", textos);
+    console.log("¿textos es array?:", Array.isArray(textos));
+    console.log("cantidad:", Array.isArray(textos) ? textos.length : 0);
+
     const idiomasPermitidos = ["ES", "EN"];
+
+    // =====================================================
+    // VALIDAR IDIOMAS
+    // =====================================================
 
     if (
       !idiomasPermitidos.includes(idiomaOrigen) ||
@@ -15,19 +28,30 @@ export const traducir = async (req, res) => {
       });
     }
 
+    // =====================================================
+    // MISMO IDIOMA
+    // =====================================================
+
     if (idiomaOrigen === idiomaDestino) {
       return res.status(400).json({
         mensaje: "El idioma de origen y destino deben ser diferentes.",
       });
     }
 
-    // Traducción de varios textos
-    if (Array.isArray(textos)) {
+    // =====================================================
+    // VARIOS TEXTOS
+    // =====================================================
+
+    if (Array.isArray(textos) && textos.length > 0) {
+      console.log("TRADUCIENDO VARIOS TEXTOS:", textos.length);
+
       const traducciones = await traducirTextos(
         textos,
         idiomaOrigen,
         idiomaDestino,
       );
+
+      console.log("TRADUCCIONES GENERADAS:", traducciones);
 
       return res.status(200).json({
         traducciones,
@@ -36,8 +60,13 @@ export const traducir = async (req, res) => {
       });
     }
 
-    // Traducción de un solo texto
-    if (texto) {
+    // =====================================================
+    // UN SOLO TEXTO
+    // =====================================================
+
+    if (typeof texto === "string" && texto.trim().length > 0) {
+      console.log("TRADUCIENDO UN SOLO TEXTO");
+
       const traduccion = await traducirTexto(
         texto,
         idiomaOrigen,
@@ -51,11 +80,20 @@ export const traducir = async (req, res) => {
       });
     }
 
+    // =====================================================
+    // NO LLEGÓ TEXTO
+    // =====================================================
+
+    console.log("NO SE RECIBIÓ TEXTO NI TEXTOS");
+
     return res.status(400).json({
       mensaje: "Debe proporcionar texto o textos.",
+      bodyRecibido: req.body,
     });
   } catch (error) {
-    console.error("ERROR COMPLETO DE TRADUCCIÓN:", error);
+    console.error("========== ERROR TRADUCCIÓN ==========");
+
+    console.error(error);
 
     return res.status(500).json({
       mensaje: "Error al realizar la traducción.",
