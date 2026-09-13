@@ -58,7 +58,6 @@ export default function PerfilUsuario() {
         setUsuario(JSON.parse(usuarioGuardado));
       } catch (error) {
         console.error("Error al cargar los datos del usuario:", error);
-
         setUsuario(null);
       }
     };
@@ -164,7 +163,7 @@ export default function PerfilUsuario() {
     try {
       setEliminando(`sitio-${idSitio}`);
 
-      await axios.delete(`${API_URL}/favoritos/${idSitio}`, {
+      await axios.delete(`${API_URL}/favoritos/sitios/${idSitio}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -201,7 +200,7 @@ export default function PerfilUsuario() {
     try {
       setEliminando(`evento-${idEvento}`);
 
-      await axios.delete(`${API_URL}/favoritos/evento/${idEvento}`, {
+      await axios.delete(`${API_URL}/favoritos/eventos/${idEvento}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -638,7 +637,7 @@ export default function PerfilUsuario() {
             <>
               {/* =================================================
                     SITIOS FAVORITOS
-                ================================================== */}
+              ================================================== */}
 
               <div className="favoritos-seccion">
                 <div className="favoritos-seccion-titulo">
@@ -833,7 +832,7 @@ export default function PerfilUsuario() {
 
               {/* =================================================
                     EVENTOS FAVORITOS
-                ================================================== */}
+              ================================================== */}
 
               <div className="favoritos-seccion">
                 <div className="favoritos-seccion-titulo">
@@ -905,7 +904,7 @@ export default function PerfilUsuario() {
 
               {/* =================================================
                     SIN FAVORITOS
-                ================================================== */}
+              ================================================== */}
 
               {totalFavoritos === 0 && (
                 <div className="favoritos-todos-vacios">
