@@ -6,6 +6,7 @@ import eventosRoutes from "./Routes/eventos.routes.js";
 import categoriasRoutes from "./Routes/categoria.routes.js"; // <--- Importar la RUTA, no el controlador
 import favoritosRoutes from "./Routes/favoritos.routes.js"; // <--- Módulo de favoritos
 import cors from "cors";
+import traduccionRoutes from "./routes/traduccionRoutes.js";
 
 process.loadEnvFile();
 const PORT = process.env.PORT ?? 3000;
@@ -17,6 +18,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 // Permite peticiones desde cualquier origen durante las pruebas
 app.use(cors());
+app.use("/traduccion", traduccionRoutes);
 
 // Registro de rutas
 app.use(authRoutes);
