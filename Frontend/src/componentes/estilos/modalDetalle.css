@@ -1,0 +1,410 @@
+/* =========================================
+   FONDO DEL MODAL
+========================================= */
+
+.modal-detalle__fondo {
+  position: fixed;
+  inset: 0;
+
+  z-index: 3000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 25px;
+
+  background-color: rgba(20, 35, 24, 0.65);
+
+  backdrop-filter: blur(5px);
+
+  overflow-y: auto;
+
+  box-sizing: border-box;
+}
+
+/* =========================================
+   MODAL
+========================================= */
+
+.modal-detalle {
+  position: relative;
+
+  width: 100%;
+  max-width: 720px;
+
+  max-height: 90vh;
+
+  background-color: #ffffff;
+
+  border-radius: 22px;
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+
+  /*
+    IMPORTANTE:
+    El contenido completo del modal puede
+    desplazarse verticalmente.
+  */
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  box-sizing: border-box;
+
+  animation: modalEntrada 0.2s ease;
+}
+
+/* =========================================
+   ANIMACIÓN
+========================================= */
+
+@keyframes modalEntrada {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =========================================
+   BOTÓN CERRAR
+========================================= */
+
+.modal-detalle__cerrar {
+  position: absolute;
+
+  top: 15px;
+  right: 15px;
+
+  z-index: 10;
+
+  width: 42px;
+  height: 42px;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 50%;
+
+  background-color: rgba(255, 255, 255, 0.95);
+
+  color: #304f35;
+
+  font-size: 28px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.modal-detalle__cerrar:hover {
+  background-color: #e8eee6;
+
+  transform: scale(1.05);
+}
+
+/* =========================================
+   IMAGEN
+========================================= */
+
+.modal-detalle__imagen {
+  width: 100%;
+  height: 300px;
+
+  flex-shrink: 0;
+
+  background-color: #e8eee6;
+
+  overflow: hidden;
+}
+
+.modal-detalle__imagen img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+.modal-detalle__sin-imagen {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 70px;
+
+  background-color: #e8eee6;
+}
+
+/* =========================================
+   CONTENIDO
+========================================= */
+
+.modal-detalle__contenido {
+  width: 100%;
+
+  padding: 30px 35px 35px;
+
+  box-sizing: border-box;
+
+  flex-shrink: 0;
+}
+
+/* =========================================
+   CATEGORÍA
+========================================= */
+
+.modal-detalle__categoria {
+  display: inline-block;
+
+  margin-bottom: 10px;
+
+  padding: 6px 12px;
+
+  background-color: #e8eee6;
+
+  color: #456f46;
+
+  border-radius: 20px;
+
+  font-size: 13px;
+
+  font-weight: 700;
+}
+
+/* =========================================
+   TÍTULO
+========================================= */
+
+.modal-detalle__contenido h2 {
+  margin: 0;
+
+  color: #304f35;
+
+  font-size: 30px;
+
+  line-height: 1.2;
+}
+
+.modal-detalle__titulo-ingles {
+  margin: 8px 0 0;
+
+  color: #7a857a;
+
+  font-size: 15px;
+
+  font-style: italic;
+
+  line-height: 1.5;
+}
+
+/* =========================================
+   SECCIONES
+========================================= */
+
+.modal-detalle__seccion {
+  margin-top: 25px;
+}
+
+.modal-detalle__seccion h3 {
+  margin: 0 0 8px;
+
+  color: #304f35;
+
+  font-size: 17px;
+}
+
+.modal-detalle__seccion p {
+  margin: 0;
+
+  color: #566056;
+
+  font-size: 15px;
+
+  line-height: 1.7;
+}
+
+/* =========================================
+   DATOS
+========================================= */
+
+.modal-detalle__datos {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 15px;
+
+  margin-top: 25px;
+}
+
+/* =========================================
+   DATO INDIVIDUAL
+========================================= */
+
+.modal-detalle__dato {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 12px;
+
+  padding: 15px;
+
+  background-color: #f5f7f3;
+
+  border-radius: 12px;
+
+  box-sizing: border-box;
+}
+
+.modal-detalle__dato > span {
+  flex-shrink: 0;
+
+  font-size: 20px;
+}
+
+.modal-detalle__dato strong {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #304f35;
+
+  font-size: 14px;
+}
+
+.modal-detalle__dato p {
+  margin: 0;
+
+  color: #667066;
+
+  font-size: 13px;
+
+  line-height: 1.4;
+
+  overflow-wrap: anywhere;
+}
+
+/* =========================================
+   AUDIO
+========================================= */
+
+.modal-detalle__audio {
+  width: 100%;
+
+  margin-top: 8px;
+}
+
+/* =========================================
+   BARRA DE DESPLAZAMIENTO
+========================================= */
+
+.modal-detalle::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-detalle::-webkit-scrollbar-track {
+  background: #f1f4ef;
+}
+
+.modal-detalle::-webkit-scrollbar-thumb {
+  background: #b8cbb8;
+
+  border-radius: 10px;
+}
+
+.modal-detalle::-webkit-scrollbar-thumb:hover {
+  background: #91aa91;
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 768px) {
+  .modal-detalle__fondo {
+    padding: 15px;
+  }
+
+  .modal-detalle {
+    max-height: 92vh;
+
+    border-radius: 18px;
+  }
+
+  .modal-detalle__imagen {
+    height: 240px;
+  }
+
+  .modal-detalle__contenido {
+    padding: 25px;
+  }
+
+  .modal-detalle__contenido h2 {
+    font-size: 25px;
+  }
+}
+
+/* =========================================
+   MÓVIL
+========================================= */
+
+@media (max-width: 480px) {
+  .modal-detalle__fondo {
+    padding: 10px;
+  }
+
+  .modal-detalle {
+    max-height: 94vh;
+
+    border-radius: 16px;
+  }
+
+  .modal-detalle__imagen {
+    height: 190px;
+  }
+
+  .modal-detalle__cerrar {
+    width: 38px;
+    height: 38px;
+
+    top: 10px;
+    right: 10px;
+
+    font-size: 25px;
+  }
+
+  .modal-detalle__contenido {
+    padding: 20px;
+  }
+
+  .modal-detalle__contenido h2 {
+    font-size: 22px;
+  }
+
+  .modal-detalle__datos {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-detalle__seccion p {
+    font-size: 14px;
+  }
+}

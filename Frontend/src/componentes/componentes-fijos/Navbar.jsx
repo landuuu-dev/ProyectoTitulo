@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from "react";
+
 import { Link, useNavigate } from "react-router-dom";
+
 import "../estilos/estilos-navbar.css";
+
+import SelectorIdioma from "./SelectorIdioma";
 
 export default function Navbar() {
   const navigate = useNavigate();
 
   const [usuario, setUsuario] = useState(null);
 
+  const [menuAbierto, setMenuAbierto] = useState(false);
+
   useEffect(() => {
     cargarUsuario();
 
-    // Detecta cuando cambia el inicio/cierre de sesión
     const actualizarUsuario = () => {
       cargarUsuario();
     };
@@ -28,9 +33,11 @@ export default function Navbar() {
     if (usuarioGuardado) {
       try {
         const usuarioParseado = JSON.parse(usuarioGuardado);
+
         setUsuario(usuarioParseado);
       } catch (error) {
         console.error("Error leyendo usuario:", error);
+
         setUsuario(null);
       }
     } else {
@@ -43,10 +50,15 @@ export default function Navbar() {
     sessionStorage.removeItem("usuario");
 
     setUsuario(null);
+    setMenuAbierto(false);
 
     window.dispatchEvent(new Event("authChanged"));
 
     navigate("/");
+  }
+
+  function cerrarMenu() {
+    setMenuAbierto(false);
   }
 
   const esAdministrador = usuario?.nombre_rol === "Administrador";
@@ -55,70 +67,93 @@ export default function Navbar() {
 
   return (
     <nav className="nav">
-      <Link to="/" className="logo">
+      {/* LOGO */}
+
+      <Link
+        to="/"
+        className="logo"
+        onClick={cerrarMenu}
+        data-no-traducir="true"
+      >
         Rastros del desierto
       </Link>
 
-      <ul>
+      {/* MENÚ */}
+
+      <ul className={`nav-menu ${menuAbierto ? "nav-menu-abierto" : ""}`}>
+        {/* EVENTOS */}
+
         <li>
-          <Link to="/eventos" className="boton-1">
+          <Link to="/eventos" className="boton-1" onClick={cerrarMenu}>
             Eventos culturales
           </Link>
         </li>
 
+        {/* SITIOS */}
+
         <li>
-          <Link to="/sitios" className="boton-1">
-            Lugares turisticos
+          <Link to="/sitios" className="boton-1" onClick={cerrarMenu}>
+            Lugares turísticos
           </Link>
         </li>
 
-        {/* =========================================
-            USUARIO NO LOGUEADO
-        ========================================= */}
+        {/* IDIOMA */}
+
+        <li className="nav-idioma">
+          <SelectorIdioma />
+        </li>
+
+        {/* NO AUTENTICADO */}
 
         {!usuario && (
           <>
             <li>
-              <Link to="/registro" className="boton-auth">
+              <Link to="/registro" className="boton-auth" onClick={cerrarMenu}>
                 Registrarse
               </Link>
             </li>
 
             <li>
-              <Link to="/iniciar-sesion" className="boton-auth">
-                Iniciar sesion
+              <Link
+                to="/iniciar-sesion"
+                className="boton-auth"
+                onClick={cerrarMenu}
+              >
+                Iniciar sesión
               </Link>
             </li>
           </>
         )}
 
-        {/* =========================================
-            ADMINISTRADOR
-        ========================================= */}
+        {/* ADMINISTRADOR */}
 
         {esAdministrador && (
           <li>
-            <Link to="/panel-administracion" className="boton-auth">
+            <Link
+              to="/panel-administracion"
+              className="boton-auth"
+              onClick={cerrarMenu}
+            >
               Panel de administración
             </Link>
           </li>
         )}
 
-        {/* =========================================
-            USUARIO NORMAL
-        ========================================= */}
+        {/* USUARIO */}
 
         {esUsuario && (
           <li>
-            <Link to="/perfil-usuario" className="boton-auth">
+            <Link
+              to="/perfil-usuario"
+              className="boton-auth"
+              onClick={cerrarMenu}
+            >
               Mi perfil
             </Link>
           </li>
         )}
 
-        {/* =========================================
-            CERRAR SESIÓN
-        ========================================= */}
+        {/* CERRAR SESIÓN */}
 
         {usuario && (
           <li>
@@ -128,6 +163,22 @@ export default function Navbar() {
           </li>
         )}
       </ul>
+
+      {/* HAMBURGUESA */}
+
+      <button
+        type="button"
+        className={`menu-hamburguesa ${
+          menuAbierto ? "menu-hamburguesa-activo" : ""
+        }`}
+        aria-label={menuAbierto ? "Cerrar menú" : "Abrir menú"}
+        aria-expanded={menuAbierto}
+        onClick={() => setMenuAbierto(!menuAbierto)}
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </nav>
   );
 }

@@ -1,0 +1,617 @@
+/* =========================================================
+   OVERLAY DEL MODAL
+========================================================= */
+
+.mapa-ruta-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 9999;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(0, 0, 0, 0.55);
+}
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.mapa-ruta-modal {
+  position: relative;
+
+  width: min(1000px, 100%);
+
+  max-height: 92vh;
+
+  overflow: hidden;
+
+  display: flex;
+
+  flex-direction: column;
+
+  background: #ffffff;
+
+  border-radius: 18px;
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.mapa-ruta-header {
+  position: relative;
+  z-index: 3000;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 20px 24px;
+
+  background: #f5f7f3;
+
+  border-bottom: 1px solid #e1e7df;
+}
+
+.mapa-ruta-header h2 {
+  margin: 4px 0 0;
+
+  color: #304f35;
+
+  font-size: 1.35rem;
+}
+
+.mapa-ruta-subtitulo {
+  color: #5b8c5a;
+
+  font-size: 0.85rem;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.08em;
+}
+
+/* =========================================================
+   BOTÓN CERRAR
+========================================================= */
+
+.mapa-ruta-cerrar {
+  position: relative;
+
+  z-index: 3001;
+
+  width: 40px;
+  height: 40px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: #e8eee6;
+
+  color: #304f35;
+
+  font-size: 28px;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  pointer-events: auto;
+}
+
+.mapa-ruta-cerrar:hover {
+  background: #d7e3d5;
+}
+
+/* =========================================================
+   INFORMACIÓN
+========================================================= */
+
+.mapa-ruta-info {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  padding: 12px 20px;
+
+  background: #ffffff;
+}
+
+.mapa-ruta-estado,
+.mapa-ruta-distancia,
+.mapa-ruta-llegada-mini,
+.mapa-ruta-error {
+  padding: 9px 12px;
+
+  border-radius: 9px;
+
+  font-size: 0.9rem;
+}
+
+.mapa-ruta-estado {
+  background: #edf4ec;
+
+  color: #456f46;
+}
+
+.mapa-ruta-distancia {
+  background: #f3f5f1;
+
+  color: #304f35;
+}
+
+.mapa-ruta-llegada-mini {
+  background: #e5f2e5;
+
+  color: #304f35;
+
+  border: 1px solid #bcd8bc;
+
+  font-weight: 700;
+}
+
+.mapa-ruta-error {
+  width: 100%;
+
+  background: #fff0ef;
+
+  color: #8b3a34;
+
+  border: 1px solid #edc7c3;
+}
+
+/* =========================================================
+   ESTADO OFFLINE
+========================================================= */
+
+.mapa-ruta-estado-offline {
+  background: #fff3d6 !important;
+
+  color: #6d5318 !important;
+
+  border: 1px solid #e7d29b;
+
+  font-weight: 600;
+}
+
+/* =========================================================
+   CONTENEDOR DEL MAPA
+========================================================= */
+
+.mapa-ruta-contenedor {
+  position: relative;
+
+  width: 100%;
+
+  height: 500px;
+
+  min-height: 400px;
+
+  background: #e5e5e5;
+}
+
+/* =========================================================
+   MAPA LEAFLET
+========================================================= */
+
+.mapa-ruta {
+  width: 100%;
+
+  height: 100%;
+
+  min-height: 400px;
+
+  z-index: 1;
+}
+
+/*
+ * Leaflet necesita explícitamente
+ * una altura para poder mostrar el mapa.
+ */
+
+.mapa-ruta-contenedor .leaflet-container {
+  width: 100%;
+
+  height: 100%;
+
+  min-height: 400px;
+
+  font-family: inherit;
+}
+
+/* =========================================================
+   BOTÓN SEGUIR UBICACIÓN
+========================================================= */
+
+.mapa-ruta-seguir {
+  position: absolute;
+
+  right: 15px;
+
+  bottom: 15px;
+
+  z-index: 1000;
+
+  padding: 10px 15px;
+
+  background: #ffffff;
+
+  border: 1px solid #d7ded5;
+
+  border-radius: 10px;
+
+  color: #304f35;
+
+  font-size: 0.9rem;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.mapa-ruta-seguir:hover {
+  transform: translateY(-1px);
+
+  background: #f5f7f3;
+
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.2);
+}
+
+/* =========================================================
+   MARCADOR DE USUARIO
+========================================================= */
+
+.mapa-ruta-icono-usuario {
+  background: transparent !important;
+
+  border: none !important;
+}
+
+.mapa-ruta-marker-usuario {
+  width: 38px;
+
+  height: 38px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background: #ffffff;
+
+  border: 3px solid #5b8c5a;
+
+  border-radius: 50%;
+
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+
+  font-size: 20px;
+}
+
+/* =========================================================
+   MARCADOR DE DESTINO
+========================================================= */
+
+.mapa-ruta-icono-destino {
+  background: transparent !important;
+
+  border: none !important;
+}
+
+.mapa-ruta-marker-destino {
+  width: 42px;
+
+  height: 42px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background: #ffffff;
+
+  border: 3px solid #304f35;
+
+  border-radius: 50%;
+
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+
+  font-size: 22px;
+}
+
+/* =========================================================
+   AUDIOGUÍA
+========================================================= */
+
+.mapa-ruta-audioguia-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 2000;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.mapa-ruta-audioguia {
+  position: relative;
+
+  width: min(450px, 100%);
+
+  padding: 30px;
+
+  background: #ffffff;
+
+  border-radius: 18px;
+
+  text-align: center;
+
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.25);
+}
+
+.mapa-ruta-audioguia-icono {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 64px;
+
+  height: 64px;
+
+  margin: 0 auto 12px;
+
+  background: #e8f3e8;
+
+  border-radius: 50%;
+
+  font-size: 30px;
+}
+
+.mapa-ruta-audioguia-tag {
+  display: inline-block;
+
+  margin-bottom: 8px;
+
+  padding: 5px 10px;
+
+  background: #e8f3e8;
+
+  color: #456f46;
+
+  border-radius: 20px;
+
+  font-size: 0.8rem;
+
+  font-weight: 700;
+}
+
+.mapa-ruta-audioguia h3 {
+  margin: 8px 0;
+
+  color: #304f35;
+}
+
+.mapa-ruta-audioguia p {
+  color: #5c665c;
+
+  line-height: 1.5;
+}
+
+/* =========================================================
+   CERRAR AUDIOGUÍA
+========================================================= */
+
+.mapa-ruta-audioguia-cerrar {
+  position: absolute;
+
+  top: 12px;
+
+  right: 12px;
+
+  width: 34px;
+
+  height: 34px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: #edf1eb;
+
+  color: #304f35;
+
+  font-size: 22px;
+
+  cursor: pointer;
+}
+
+/* =========================================================
+   ACCIONES AUDIOGUÍA
+========================================================= */
+
+.mapa-ruta-audioguia-acciones {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+
+  margin-top: 20px;
+}
+
+.mapa-ruta-boton-audio,
+.mapa-ruta-boton-secundario {
+  width: 100%;
+
+  padding: 12px 18px;
+
+  border-radius: 10px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.mapa-ruta-boton-audio {
+  border: none;
+
+  background: #5b8c5a;
+
+  color: #ffffff;
+}
+
+.mapa-ruta-boton-audio:hover {
+  background: #456f46;
+}
+
+.mapa-ruta-boton-secundario {
+  border: 1px solid #ccd5ca;
+
+  background: #ffffff;
+
+  color: #304f35;
+}
+
+.mapa-ruta-boton-secundario:hover {
+  background: #f5f7f3;
+}
+
+/* =========================================================
+   AUDIO OFFLINE
+========================================================= */
+
+.mapa-ruta-audio-offline {
+  margin: 10px 0 0;
+
+  padding: 8px 12px;
+
+  background: #e8f3e8;
+
+  border-radius: 8px;
+
+  color: #456f46;
+
+  font-size: 0.9rem;
+
+  font-weight: 600;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 768px) {
+  .mapa-ruta-overlay {
+    padding: 10px;
+  }
+
+  .mapa-ruta-modal {
+    max-height: 95vh;
+
+    border-radius: 14px;
+  }
+
+  .mapa-ruta-header {
+    padding: 15px;
+
+    gap: 10px;
+  }
+
+  .mapa-ruta-header h2 {
+    font-size: 1.1rem;
+  }
+
+  .mapa-ruta-info {
+    padding: 10px;
+  }
+
+  .mapa-ruta-contenedor {
+    height: 430px;
+
+    min-height: 350px;
+  }
+
+  .mapa-ruta,
+  .mapa-ruta-contenedor .leaflet-container {
+    min-height: 350px;
+  }
+
+  .mapa-ruta-seguir {
+    right: 10px;
+
+    bottom: 10px;
+
+    padding: 9px 12px;
+
+    font-size: 0.82rem;
+  }
+
+  .mapa-ruta-marker-usuario {
+    width: 34px;
+
+    height: 34px;
+
+    font-size: 18px;
+  }
+
+  .mapa-ruta-marker-destino {
+    width: 38px;
+
+    height: 38px;
+
+    font-size: 20px;
+  }
+
+  .mapa-ruta-audioguia {
+    padding: 25px 20px;
+  }
+}

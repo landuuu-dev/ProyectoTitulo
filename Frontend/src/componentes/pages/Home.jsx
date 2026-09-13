@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./estilosPages/home.css";
+
 import cerroImg from "../../assets/cerro.png";
+import mapaImg from "../../assets/mapa.jpeg";
+
+import ModalDetalle from "../componentes-fijos/ModalDetalle";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -12,6 +16,17 @@ export default function Home() {
   const [busqueda, setBusqueda] = useState("");
   const [evento, setEvento] = useState(null);
   const [sitios, setSitios] = useState([]);
+
+  // =========================================
+  // ESTADOS DEL MODAL
+  // =========================================
+
+  const [modalAbierto, setModalAbierto] = useState(false);
+  const [detalleModal, setDetalleModal] = useState(null);
+
+  // =========================================
+  // CARGAR EVENTO Y SITIOS
+  // =========================================
 
   useEffect(() => {
     const fetchEvento = async () => {
@@ -42,6 +57,10 @@ export default function Home() {
     fetchSitios();
   }, []);
 
+  // =========================================
+  // BUSCADOR
+  // =========================================
+
   const handleBuscar = (e) => {
     e.preventDefault();
 
@@ -49,6 +68,10 @@ export default function Home() {
 
     navigate(`/sitios?buscar=${encodeURIComponent(termino)}`);
   };
+
+  // =========================================
+  // FORMATEAR FECHA
+  // =========================================
 
   const formatearFecha = (fecha) => {
     if (!fecha) return "";
@@ -58,6 +81,28 @@ export default function Home() {
       month: "2-digit",
       year: "numeric",
     });
+  };
+
+  // =========================================
+  // ABRIR MODAL
+  // =========================================
+
+  const abrirModal = (tipo, datos) => {
+    setDetalleModal({
+      tipo,
+      datos,
+    });
+
+    setModalAbierto(true);
+  };
+
+  // =========================================
+  // CERRAR MODAL
+  // =========================================
+
+  const cerrarModal = () => {
+    setModalAbierto(false);
+    setDetalleModal(null);
   };
 
   return (
@@ -117,6 +162,8 @@ export default function Home() {
 
           {evento && (
             <article className="sitio__card evento__card">
+              {/* IMAGEN DEL EVENTO */}
+
               <div className="sitio__imagen">
                 {evento.imagen_url ? (
                   <img src={evento.imagen_url} alt={evento.titulo} />
@@ -125,23 +172,29 @@ export default function Home() {
                 )}
               </div>
 
+              {/* CONTENIDO DEL EVENTO */}
+
               <div className="sitio__contenido">
-                <span className="sitio__categoria">
-                  {evento.nombre_categoria}
-                </span>
+                {evento.nombre_categoria && (
+                  <span className="sitio__categoria">
+                    {evento.nombre_categoria}
+                  </span>
+                )}
 
                 <h3>{evento.titulo}</h3>
 
-                <p>{evento.descripcion}</p>
+                {evento.descripcion && <p>{evento.descripcion}</p>}
 
                 <div className="evento__info">
                   <span>📍 {evento.lugar}</span>
+
                   <span>📅 {formatearFecha(evento.fecha_inicio)}</span>
                 </div>
 
                 <button
                   className="sitio__boton"
-                  onClick={() => navigate(`/eventos/${evento.id_evento}`)}
+                  type="button"
+                  onClick={() => abrirModal("evento", evento)}
                 >
                   Ver evento
                 </button>
@@ -169,7 +222,9 @@ export default function Home() {
           {sitios.length > 0 ? (
             sitios.map((sitio) => (
               <article className="sitio__card" key={sitio.id_sitio}>
-                {/* Imagen */}
+                {/* =================================================
+                    IMAGEN DEL SITIO
+                ================================================= */}
 
                 {sitio.imagen_url ? (
                   <img src={sitio.imagen_url} alt={sitio.titulo_es} />
@@ -179,7 +234,9 @@ export default function Home() {
                   </div>
                 )}
 
-                {/* Contenido */}
+                {/* =================================================
+                    CONTENIDO
+                ================================================= */}
 
                 <div className="sitio__contenido">
                   <h3>{sitio.titulo_es}</h3>
@@ -192,7 +249,7 @@ export default function Home() {
 
                   <button
                     type="button"
-                    onClick={() => navigate(`/sitios/${sitio.id_sitio}`)}
+                    onClick={() => abrirModal("sitio", sitio)}
                   >
                     Ver lugar
                   </button>
@@ -222,22 +279,33 @@ export default function Home() {
               mapas, audioguías y fichas informativas.
             </p>
 
-            <button type="button" onClick={() => navigate("/mapa")}>
+            <button type="button" onClick={() => navigate("/sitios")}>
               Explorar mapas
             </button>
+          </div>
+
+          {/* =================================================
+              IMAGEN DEL MAPA
+          ================================================= */}
+
+          <div className="offline__mapa">
+            <img src={mapaImg} alt="Mapa para navegación sin conexión" />
           </div>
         </div>
       </section>
 
       {/* =====================================================
-          FOOTER
+          MODAL REUTILIZABLE
       ===================================================== */}
 
-      <footer className="footer">
-        <h2>Rastros del desierto</h2>
-
-        <p>Descubre, explora y disfruta cada rincón del desierto.</p>
-      </footer>
+      {modalAbierto && detalleModal && (
+        <ModalDetalle
+          abierto={modalAbierto}
+          onCerrar={cerrarModal}
+          tipo={detalleModal.tipo}
+          datos={detalleModal.datos}
+        />
+      )}
     </main>
   );
 }

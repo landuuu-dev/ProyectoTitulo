@@ -1,16 +1,27 @@
-/* RESET BÁSICO Y ESTILOS DELNAVBAR */
+/* =========================================================
+   RESET BÁSICO Y ESTILOS DEL NAVBAR
+========================================================= */
 
 body {
   margin: 0;
-  padding-top: 100px; /* Desplaza el contenido hacia abajo para que el navbar no lo tape */
+  padding: 0;
 }
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
 .nav {
   position: fixed;
+
   top: 15px;
   left: 50%;
+
   transform: translateX(-50%);
+
   width: 90%;
   max-width: 1100px;
+
   z-index: 1000;
 
   display: flex;
@@ -18,57 +29,85 @@ body {
   align-items: center;
 
   padding: 8px 16px;
-  background-color: rgba(
-    200,
-    230,
-    201,
-    0.85
-  ); /* Verde menta claro semi-transparente */
-  backdrop-filter: blur(8px); /* Efecto desfoque de fondo */
+
+  background-color: rgba(200, 230, 201, 0.85);
+
+  backdrop-filter: blur(8px);
+
   border-radius: 40px;
+
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
   box-sizing: border-box;
 }
 
-/* LOGO / NOMBRE DEL SITIO */
+/* =========================================================
+   LOGO / NOMBRE DEL SITIO
+========================================================= */
+
 .nav .logo {
   font-family:
     system-ui,
     -apple-system,
     sans-serif;
+
   font-weight: 700;
+
   font-size: 1.1rem;
+
   color: #2e4d32;
+
   text-decoration: none;
+
   line-height: 1.2;
+
   max-width: 120px;
+
   padding-left: 20px;
 }
 
-/* LISTA DE NAVEGACIÓN */
+/* =========================================================
+   LISTA DE NAVEGACIÓN
+========================================================= */
+
 .nav ul {
   list-style: none;
+
   margin: 0;
   padding: 0;
+
   display: flex;
   align-items: center;
+
   gap: 12px;
 }
 
-/* ENLACES NORMALES */
+/* =========================================================
+   ENLACES NORMALES
+========================================================= */
+
 .nav .boton-1 {
   text-decoration: none;
+
   color: #2e4d32;
+
   font-family:
     system-ui,
     -apple-system,
     sans-serif;
+
   font-size: 0.9rem;
+
   font-weight: 500;
+
   padding: 8px 12px;
+
   text-align: center;
+
   display: inline-block;
+
   line-height: 1.2;
+
   transition: opacity 0.2s ease;
 }
 
@@ -76,20 +115,32 @@ body {
   opacity: 0.75;
 }
 
-/* BOTONES DE AUTENTICACIÓN (PÍLDORAS VERDES MÁS OSCURAS) */
+/* =========================================================
+   BOTONES DE AUTENTICACIÓN
+========================================================= */
+
 .nav .boton-auth {
   text-decoration: none;
+
   color: #ffffff;
-  background-color: #81c784; /* Verde mas intenso para los botones destacados */
+
+  background-color: #81c784;
+
   font-family:
     system-ui,
     -apple-system,
     sans-serif;
+
   font-size: 0.9rem;
+
   font-weight: 500;
+
   padding: 8px 18px;
+
   border-radius: 20px;
+
   display: inline-block;
+
   transition:
     background-color 0.2s ease,
     transform 0.1s ease;
@@ -97,4 +148,248 @@ body {
 
 .nav .boton-auth:hover {
   background-color: #66bb6a;
+}
+
+/* =========================================================
+   MENÚ HAMBURGUESA
+========================================================= */
+
+.menu-hamburguesa {
+  display: none;
+
+  width: 46px;
+  height: 46px;
+
+  padding: 0;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background-color: #e8eee6;
+
+  cursor: pointer;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-direction: column;
+
+  gap: 5px;
+
+  flex-shrink: 0;
+}
+
+.menu-hamburguesa span {
+  display: block;
+
+  width: 25px;
+  height: 3px;
+
+  border-radius: 5px;
+
+  background-color: #304f35;
+
+  transition: all 0.2s ease;
+}
+
+.menu-hamburguesa:hover {
+  background-color: #d4ead4;
+}
+
+/* =========================================================
+   MÓVIL
+========================================================= */
+
+@media (max-width: 768px) {
+  .nav {
+    position: fixed;
+
+    top: 15px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: calc(100% - 28px);
+
+    min-height: 70px;
+
+    padding: 12px 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 12px;
+  }
+
+  /* =======================================================
+     LOGO
+  ======================================================= */
+
+  .nav .logo {
+    display: flex;
+
+    align-items: center;
+
+    max-width: calc(100% - 60px);
+
+    padding-left: 20px;
+
+    line-height: 1.1;
+
+    text-decoration: none;
+
+    position: relative;
+
+    z-index: 1002;
+  }
+
+  /* =======================================================
+     HAMBURGUESA
+  ======================================================= */
+
+  .menu-hamburguesa {
+    display: flex;
+
+    position: relative;
+
+    z-index: 1002;
+  }
+
+  /* =======================================================
+     OCULTAR MENÚ
+  ======================================================= */
+
+  .nav > .nav-menu {
+    display: none !important;
+  }
+
+  /* =======================================================
+     MENÚ ABIERTO
+  ======================================================= */
+
+  .nav > .nav-menu.nav-menu-abierto {
+    display: flex !important;
+
+    position: absolute;
+
+    top: calc(100% + 8px);
+
+    left: 0;
+    right: 0;
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    margin: 0;
+
+    padding: 18px;
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 10px;
+
+    list-style: none;
+
+    background-color: #ffffff;
+
+    border-radius: 18px;
+
+    border: 1px solid #e1e7df;
+
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+
+    z-index: 1001;
+  }
+
+  /* =======================================================
+     ELEMENTOS DEL MENÚ
+  ======================================================= */
+
+  .nav > .nav-menu.nav-menu-abierto li {
+    display: block;
+
+    width: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+  }
+
+  /* =======================================================
+     LINKS Y BOTONES
+  ======================================================= */
+
+  .nav > .nav-menu.nav-menu-abierto li a,
+  .nav > .nav-menu.nav-menu-abierto li button {
+    width: 100%;
+
+    min-height: 46px;
+
+    box-sizing: border-box;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 10px 14px;
+
+    border-radius: 10px;
+
+    text-align: center;
+  }
+
+  /* =======================================================
+     EVITAR DESBORDAMIENTO
+  ======================================================= */
+
+  .nav > .nav-menu.nav-menu-abierto li a,
+  .nav > .nav-menu.nav-menu-abierto li button {
+    white-space: normal;
+
+    overflow-wrap: break-word;
+  }
+}
+
+/* =========================================================
+   MÓVILES PEQUEÑOS
+========================================================= */
+
+@media (max-width: 480px) {
+  .nav {
+    top: 10px;
+
+    width: calc(100% - 20px);
+
+    padding: 10px 14px;
+  }
+
+  .nav .logo {
+    font-size: 18px;
+
+    padding-left: 12px;
+  }
+
+  .menu-hamburguesa {
+    width: 42px;
+    height: 42px;
+  }
+
+  .nav > .nav-menu.nav-menu-abierto {
+    left: 0;
+    right: 0;
+
+    width: 100%;
+
+    padding: 15px;
+  }
 }

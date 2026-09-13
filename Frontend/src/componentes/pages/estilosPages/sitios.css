@@ -1,330 +1,446 @@
-/* =========================================================
-   SITIOS - PÁGINA
-========================================================= */
-
-.sitios-pagina {
-  width: 100%;
+.sitios-page {
   min-height: 100vh;
-  margin: 0;
-  background: #fafaf8;
-  font-family: Arial, Helvetica, sans-serif;
-  color: #202020;
+  background: #f5f7f3;
+  color: #304f35;
 }
 
-/* =========================================================
-   HERO CON CERRO
-========================================================= */
+/* =========================
+HERO
+========================= */
 
 .sitios-hero {
-  position: relative;
-  width: 100%;
-  min-height: 360px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
+  min-height: 430px;
   background-size: cover;
   background-position: center;
-
-  overflow: hidden;
+  position: relative;
 }
 
-.sitios-hero__overlay {
-  position: absolute;
-  inset: 0;
-
+.sitios-hero-overlay {
+  min-height: 430px;
   background: linear-gradient(
     90deg,
-    rgba(0, 0, 0, 0.62),
-    rgba(0, 0, 0, 0.35),
-    rgba(0, 0, 0, 0.18)
+    rgba(48, 79, 53, 0.88) 0%,
+    rgba(48, 79, 53, 0.68) 45%,
+    rgba(48, 79, 53, 0.25) 100%
   );
-}
-
-.sitios-hero__contenido {
-  position: relative;
-  z-index: 2;
-
-  width: 100%;
-  max-width: 1100px;
-
-  padding: 80px 40px;
-
-  text-align: center;
-  color: #ffffff;
-}
-
-.sitios-hero__etiqueta {
-  display: inline-block;
-
-  margin-bottom: 18px;
-  padding: 8px 18px;
-
-  background: #d4ead4;
-  border-radius: 999px;
-
-  color: #304f35;
-
-  font-size: 13px;
-  font-weight: 700;
-
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-}
-
-.sitios-titulo {
-  margin: 0 0 15px;
-
-  font-family: Georgia, "Times New Roman", serif;
-
-  font-size: clamp(38px, 6vw, 58px);
-  line-height: 1.1;
-
-  font-weight: 700;
-  color: #ffffff;
-
-  text-shadow:
-    0 3px 10px rgba(0, 0, 0, 0.7),
-    0 1px 3px rgba(0, 0, 0, 0.9);
-}
-
-.sitios-hero__descripcion {
-  max-width: 550px;
-
-  margin: 0 auto;
-
-  font-size: 17px;
-  line-height: 1.6;
-
-  color: #ffffff;
-
-  text-shadow: 0 2px 7px rgba(0, 0, 0, 0.7);
-}
-
-/* =========================================================
-   BUSCADOR
-========================================================= */
-
-.sitios-buscador-contenedor {
-  width: 100%;
-  max-width: 1100px;
-
-  margin: 0 auto;
-
-  padding: 35px 40px 20px;
-}
-
-.sitios-buscador-label {
-  display: block;
-
-  margin-bottom: 12px;
-
-  color: #304f35;
-
-  font-size: 15px;
-  font-weight: 700;
-}
-
-.sitios-buscador {
-  width: 100%;
-  min-height: 52px;
 
   display: flex;
   align-items: center;
-
-  gap: 10px;
-
-  padding: 0 18px;
-
-  background: #ffffff;
-
-  border: 1px solid #d7dfd5;
-  border-radius: 999px;
-
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
-
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
 }
 
-.sitios-buscador:focus-within {
-  border-color: #5b8c5a;
-
-  box-shadow: 0 0 0 3px rgba(91, 140, 90, 0.12);
-}
-
-.sitios-buscador-icono {
-  font-size: 16px;
-  opacity: 0.7;
-}
-
-.sitios-buscador-input {
+.sitios-hero-content {
   width: 100%;
-  min-width: 0;
+  max-width: 1150px;
+  margin: 0 auto;
+  padding: 70px 25px;
+  color: white;
+}
 
+.sitios-hero-subtitle {
+  margin: 0 0 10px;
+  color: #d4ead4;
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.sitios-hero h1 {
+  margin: 0 0 18px;
+  font-size: 48px;
+  line-height: 1.1;
+  font-weight: 700;
+}
+
+.sitios-hero-content > p:not(.sitios-hero-subtitle) {
+  max-width: 620px;
+  margin: 0 0 30px;
+  font-size: 18px;
+  line-height: 1.7;
+  color: #f5f7f3;
+}
+
+/* =========================
+BUSCADOR
+========================= */
+
+.sitios-search {
+  display: flex;
+  width: 100%;
+  max-width: 650px;
+  background: white;
+  border-radius: 12px;
+  padding: 6px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.sitios-search input {
+  flex: 1;
+  min-width: 0;
   border: none;
   outline: none;
-
+  padding: 13px 15px;
+  font-size: 15px;
+  color: #304f35;
   background: transparent;
-
-  font-family: inherit;
-  font-size: 14px;
-
-  color: #333333;
 }
 
-.sitios-buscador-input::placeholder {
-  color: #999999;
+.sitios-search input::placeholder {
+  color: #899589;
 }
 
-/* =========================================================
-   LISTA DE SITIOS
-========================================================= */
+.sitios-search button {
+  border: none;
+  border-radius: 9px;
+  padding: 0 25px;
+  background: #5b8c5a;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
 
-.sitios-lista {
+.sitios-search button:hover {
+  background: #456f46;
+}
+
+/* =========================
+CONTENEDOR
+========================= */
+
+.sitios-container {
   width: 100%;
-  max-width: 1100px;
-
+  max-width: 1150px;
   margin: 0 auto;
+  padding: 60px 25px 80px;
+}
 
-  padding: 20px 40px 80px;
+.sitios-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 30px;
+}
 
+.sitios-section-subtitle {
+  margin: 0 0 7px;
+  color: #5b8c5a;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+}
+
+.sitios-section-header h2 {
+  margin: 0;
+  color: #304f35;
+  font-size: 30px;
+  line-height: 1.2;
+}
+
+/* =========================
+GRID
+========================= */
+
+.sitios-grid {
   display: grid;
-
-  grid-template-columns: repeat(2, 1fr);
-
+  grid-template-columns: repeat(3, 1fr);
   gap: 25px;
 }
 
-/* =========================================================
-   TARJETA
-========================================================= */
+/* =========================
+TARJETA
+========================= */
 
-.sitio-tarjeta {
-  display: flex;
-  flex-direction: column;
-
+.sitio-card {
   overflow: hidden;
-
   background: #ffffff;
-
+  border: 1px solid #e3eadf;
   border-radius: 16px;
-
-  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.1);
-
+  box-shadow: 0 6px 20px rgba(48, 79, 53, 0.07);
   transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.sitio-tarjeta:hover {
-  transform: translateY(-5px);
-
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
+.sitio-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(48, 79, 53, 0.12);
 }
 
-/* =========================================================
-   IMAGEN
-========================================================= */
+/* =========================
+IMAGEN
+========================= */
 
-.sitio-imagen-wrap {
+.sitio-card-image-container {
+  position: relative;
   width: 100%;
   height: 230px;
-
   overflow: hidden;
-
-  background: #dddddd;
+  background: #e9eee7;
 }
 
-.sitio-imagen {
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-
+.sitio-card-image {
   display: block;
-
-  transition: transform 0.4s ease;
-}
-
-.sitio-tarjeta:hover .sitio-imagen {
-  transform: scale(1.04);
-}
-
-.sitio-placeholder {
   width: 100%;
   height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.sitio-card:hover .sitio-card-image {
+  transform: scale(1.03);
+}
+
+.sitio-card-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #718071;
+  font-size: 14px;
+}
+
+/* =========================
+FAVORITO
+========================= */
+
+.sitio-favorito {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+
+  width: 44px;
+  height: 44px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  background: #e9eee8;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
 
-  color: #6c786c;
+  background: rgba(255, 255, 255, 0.94);
+  color: #5b8c5a;
 
-  font-size: 14px;
+  font-size: 27px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
-/* =========================================================
-   INFORMACIÓN
-========================================================= */
-
-.sitio-info {
-  flex: 1;
-
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-
-  padding: 22px;
+.sitio-favorito:hover {
+  transform: scale(1.08);
+  background: #ffffff;
+  color: #456f46;
 }
 
-.sitio-nombre {
-  margin: 0 0 10px;
+.sitio-favorito:active {
+  transform: scale(0.94);
+}
 
-  font-size: 21px;
-  line-height: 1.3;
+.sitio-favorito-activo {
+  background: #d4ead4;
+  color: #456f46;
+}
 
-  font-weight: 700;
-
+.sitio-favorito-activo:hover {
+  background: #cce8cc;
   color: #304f35;
 }
 
-.sitio-descripcion {
-  margin: 0 0 20px;
+.sitio-favorito:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
 
+/* =========================
+CONTENIDO TARJETA
+========================= */
+
+.sitio-card-content {
+  padding: 22px;
+}
+
+.sitio-card-content h3 {
+  margin: 0 0 6px;
+  color: #304f35;
+  font-size: 21px;
+  line-height: 1.3;
+}
+
+.sitio-card-title-en {
+  margin: 0 0 14px;
+  color: #718071;
+  font-size: 13px;
+  font-style: italic;
+}
+
+.sitio-card-description {
+  margin: 0;
+  color: #5e695f;
   font-size: 14px;
-  line-height: 1.55;
-
-  color: #666666;
+  line-height: 1.65;
 
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
-
   overflow: hidden;
 }
 
-/* =========================================================
-   BOTÓN
-========================================================= */
+.sitio-card-footer {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #e5ebe2;
+}
 
-.sitio-boton {
-  margin-top: auto;
+.sitio-card-coordinates {
+  color: #718071;
+  font-size: 12px;
+}
 
-  padding: 11px 22px;
+/* =========================
+MENSAJES
+========================= */
 
+.sitios-mensaje {
+  background: #ffffff;
+  border: 1px solid #e3eadf;
+  border-radius: 14px;
+  padding: 35px;
+  text-align: center;
+  color: #718071;
+}
+
+.sitios-mensaje p {
+  margin: 0;
+}
+
+.sitios-error {
+  color: #8a4f4f;
+}
+
+.sitios-error button {
+  margin-top: 18px;
+  border: none;
+  border-radius: 10px;
+  padding: 11px 20px;
+  background: #5b8c5a;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.sitios-error button:hover {
+  background: #456f46;
+}
+
+/* =========================
+RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+  .sitios-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sitios-hero h1 {
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 650px) {
+  .sitios-hero,
+  .sitios-hero-overlay {
+    min-height: 500px;
+  }
+
+  .sitios-hero-content {
+    padding: 55px 20px;
+  }
+
+  .sitios-hero h1 {
+    font-size: 34px;
+  }
+
+  .sitios-hero-content > p:not(.sitios-hero-subtitle) {
+    font-size: 16px;
+  }
+
+  .sitios-search {
+    flex-direction: column;
+    padding: 6px;
+  }
+
+  .sitios-search input {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .sitios-search button {
+    min-height: 45px;
+  }
+
+  .sitios-container {
+    padding: 45px 18px 60px;
+  }
+
+  .sitios-section-header h2 {
+    font-size: 25px;
+  }
+
+  .sitios-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .sitio-card-image-container {
+    height: 220px;
+  }
+}
+.sitio-card-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.sitio-card-audio audio {
+  width: 100%;
+  height: 36px;
+  border-radius: 6px;
+}
+
+.sitio-card-sin-audio {
+  font-size: 0.85rem;
+  color: #888;
+  font-style: italic;
+}
+/* =========================================
+   BOTONES DE SITIOS
+========================================= */
+
+/* Botones generales dentro de las tarjetas */
+.sitio-card-content button {
   border: none;
   border-radius: 10px;
 
-  background-color: #5b8c5a;
+  padding: 11px 16px;
 
+  background-color: #5b8c5a;
   color: #ffffff;
 
   font-family: inherit;
-
   font-size: 14px;
   font-weight: 600;
 
@@ -336,126 +452,142 @@
     box-shadow 0.2s ease;
 }
 
-.sitio-boton:hover {
+.sitio-card-content button:hover {
   background-color: #456f46;
 
   transform: translateY(-1px);
 
-  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 10px rgba(48, 79, 53, 0.18);
 }
 
-.sitio-boton:active {
+.sitio-card-content button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.sitio-card-content button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* =========================================
+   BOTÓN VER LUGAR
+========================================= */
+
+.sitio-card-content > button:not(.sitio-boton-offline) {
+  background-color: #5b8c5a;
+}
+
+.sitio-card-content > button:not(.sitio-boton-offline):hover {
+  background-color: #456f46;
+}
+
+/* =========================================
+   BOTÓN DESCARGAR OFFLINE
+========================================= */
+
+.sitio-boton-offline {
+  background-color: #dce9dc !important;
+  color: #304f35 !important;
+
+  border: 1px solid #b8cbb8 !important;
+}
+
+.sitio-boton-offline:hover {
+  background-color: #c9ddc9 !important;
+  color: #304f35 !important;
+}
+
+/* =========================================
+   BOTÓN CÓMO LLEGAR
+========================================= */
+
+.sitio-card-footer > button:last-child {
+  background-color: #304f35;
+}
+
+.sitio-card-footer > button:last-child:hover {
+  background-color: #243c28;
+}
+
+/* =========================================
+   BUSCADOR
+========================================= */
+
+.sitios-search button {
+  border: none;
+  border-radius: 10px;
+
+  padding: 12px 22px;
+
+  background-color: #5b8c5a;
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.sitios-search button:hover {
+  background-color: #456f46;
+  transform: translateY(-1px);
+}
+
+.sitios-search button:active {
   transform: translateY(0);
 }
 
-.sitio-boton:focus-visible {
-  outline: 3px solid rgba(91, 140, 90, 0.35);
+/* =========================================
+   BOTÓN INTENTAR NUEVAMENTE
+========================================= */
 
-  outline-offset: 3px;
+.sitios-mensaje button {
+  border: none;
+  border-radius: 10px;
+
+  padding: 11px 18px;
+
+  background-color: #5b8c5a;
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
 }
 
-/* =========================================================
-   TABLET
-========================================================= */
-
-@media (max-width: 899px) {
-  .sitios-hero {
-    min-height: 330px;
-  }
-
-  .sitios-hero__contenido {
-    padding: 70px 30px;
-  }
-
-  .sitios-buscador-contenedor {
-    padding: 30px 30px 15px;
-  }
-
-  .sitios-lista {
-    padding: 20px 30px 60px;
-
-    grid-template-columns: repeat(2, 1fr);
-
-    gap: 20px;
-  }
-
-  .sitio-imagen-wrap {
-    height: 210px;
-  }
+.sitios-mensaje button:hover {
+  background-color: #456f46;
+  transform: translateY(-1px);
 }
 
-/* =========================================================
-   CELULAR
-========================================================= */
+/* =========================================
+   MÓVIL
+========================================= */
 
-@media (max-width: 599px) {
-  .sitios-hero {
-    min-height: 390px;
-
-    background-position: center;
-  }
-
-  .sitios-hero__contenido {
-    padding: 80px 24px 60px;
-  }
-
-  .sitios-hero__etiqueta {
-    padding: 7px 15px;
-
-    font-size: 12px;
-  }
-
-  .sitios-titulo {
-    font-size: 38px;
-  }
-
-  .sitios-hero__descripcion {
-    font-size: 14px;
-  }
-
-  /* Buscador */
-
-  .sitios-buscador-contenedor {
-    padding: 25px 20px 10px;
-  }
-
-  .sitios-buscador-label {
-    text-align: center;
-  }
-
-  .sitios-buscador {
-    min-height: 48px;
-  }
-
-  /* Tarjetas */
-
-  .sitios-lista {
-    grid-template-columns: 1fr;
-
-    padding: 20px 20px 50px;
-
-    gap: 20px;
-  }
-
-  .sitio-imagen-wrap {
-    height: 220px;
-  }
-
-  .sitio-info {
-    padding: 20px;
-  }
-
-  .sitio-nombre {
-    font-size: 20px;
-  }
-
-  .sitio-descripcion {
-    font-size: 14px;
-  }
-
-  .sitio-boton {
+@media (max-width: 600px) {
+  .sitio-card-content button {
     width: 100%;
+  }
 
-    text-align: center;
+  .sitios-search button {
+    width: 100%;
+  }
+
+  .sitios-mensaje button {
+    width: 100%;
   }
 }

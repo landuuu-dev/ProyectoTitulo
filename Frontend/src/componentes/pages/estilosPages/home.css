@@ -9,8 +9,11 @@
 .home {
   width: 100%;
   margin: 0 auto;
+
   font-family: Arial, Helvetica, sans-serif;
+
   color: #202020;
+
   background: #ffffff;
 }
 
@@ -25,15 +28,23 @@
 
 .hero {
   position: relative;
+
+  width: 100%;
+
   min-height: 560px;
+
   overflow: hidden;
+
   isolation: isolate;
 }
 
-/* Imagen */
+/* =========================================================
+   IMAGEN HERO
+========================================================= */
 
 .hero__imagen {
   position: absolute;
+
   inset: 0;
 
   width: 100%;
@@ -47,15 +58,19 @@
   height: 100%;
 
   object-fit: cover;
+
   object-position: center;
 }
 
-/* Oscurecer imagen */
+/* =========================================================
+   OSCURECER IMAGEN
+========================================================= */
 
 .hero::after {
   content: "";
 
   position: absolute;
+
   inset: 0;
 
   background: linear-gradient(
@@ -69,49 +84,12 @@
 }
 
 /* =========================================================
-   LOGO
-========================================================= */
-
-.hero::before {
-  content: "Rastros del\A desierto";
-  white-space: pre;
-
-  position: absolute;
-
-  top: 28px;
-  left: 40px;
-
-  width: 145px;
-  min-height: 58px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 8px 14px;
-
-  background: #d4ead4;
-  color: #304f35;
-
-  border-radius: 30px;
-
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 1.1;
-
-  text-align: center;
-
-  z-index: 10;
-
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-}
-
-/* =========================================================
    CONTENIDO HERO
 ========================================================= */
 
 .hero__contenido {
   width: 100%;
+
   max-width: 1200px;
 
   min-height: 560px;
@@ -121,15 +99,23 @@
   padding: 120px 60px 80px;
 
   display: flex;
+
   align-items: center;
 }
 
+/* =========================================================
+   TEXTO HERO
+========================================================= */
+
 .hero__texto {
   width: 60%;
+
   max-width: 680px;
 
   display: flex;
+
   flex-direction: column;
+
   align-items: flex-start;
 
   text-align: left;
@@ -185,11 +171,13 @@
 
 .hero__buscador {
   width: 100%;
+
   max-width: 510px;
 
   height: 60px;
 
   display: flex;
+
   align-items: center;
 
   background: #ffffff;
@@ -207,16 +195,19 @@
   flex: 1;
 
   width: 100%;
+
   height: 100%;
 
   padding: 0 22px;
 
   border: none;
+
   outline: none;
 
   background: transparent;
 
   font-family: inherit;
+
   font-size: 16px;
 
   color: #333;
@@ -228,6 +219,7 @@
 
 .hero__buscador button {
   width: 60px;
+
   height: 60px;
 
   flex-shrink: 0;
@@ -235,6 +227,7 @@
   border: none;
 
   background: #d4ead4;
+
   color: #304f35;
 
   font-size: 22px;
@@ -304,17 +297,17 @@
   overflow: hidden;
 }
 
-/* Decoración verde */
-
 .agenda::before {
   content: "";
 
   position: absolute;
 
   left: 0;
+
   top: 180px;
 
   width: 55%;
+
   height: 420px;
 
   background: #cce8cc;
@@ -323,8 +316,6 @@
 
   z-index: 0;
 }
-
-/* Contenedor */
 
 .agenda .section__header {
   position: relative;
@@ -337,14 +328,18 @@
 
   display: grid;
 
-  grid-template-columns: 1fr 360px;
+  grid-template-columns:
+    1fr
+    360px;
 
   gap: 80px;
 
   align-items: center;
 }
 
-/* Texto */
+/* =========================================================
+   TEXTO AGENDA
+========================================================= */
 
 .agenda__texto {
   padding-left: 20px;
@@ -378,6 +373,7 @@
 
 .evento__card {
   width: 100%;
+
   max-width: 360px;
 
   background: #ffffff;
@@ -399,10 +395,13 @@
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.15);
 }
 
-/* Imagen evento */
+/* =========================================================
+   IMAGEN EVENTO
+========================================================= */
 
 .evento__card .sitio__imagen {
   width: 100%;
+
   height: 210px;
 
   overflow: hidden;
@@ -410,6 +409,7 @@
 
 .evento__card .sitio__imagen img {
   width: 100%;
+
   height: 100%;
 
   object-fit: cover;
@@ -423,7 +423,9 @@
   transform: scale(1.05);
 }
 
-/* Contenido */
+/* =========================================================
+   CONTENIDO EVENTO
+========================================================= */
 
 .evento__card .sitio__contenido {
   padding: 22px;
@@ -471,7 +473,9 @@
   overflow: hidden;
 }
 
-/* Información evento */
+/* =========================================================
+   INFORMACIÓN EVENTO
+========================================================= */
 
 .evento__info {
   display: flex;
@@ -487,7 +491,9 @@
   color: #555;
 }
 
-/* Botón evento */
+/* =========================================================
+   BOTÓN EVENTO
+========================================================= */
 
 .evento__card .sitio__boton {
   width: 100%;
@@ -546,7 +552,7 @@
 }
 
 /* =========================================================
-   SITIOS
+   GRID DE SITIOS
 ========================================================= */
 
 .sitios__grid {
@@ -562,6 +568,10 @@
 
   gap: 24px;
 }
+
+/* =========================================================
+   TARJETA SITIO
+========================================================= */
 
 .sitio__card {
   overflow: hidden;
@@ -583,11 +593,14 @@
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.14);
 }
 
-/* Imagen */
+/* =========================================================
+   IMAGEN SITIO
+========================================================= */
 
 .sitio__card img,
 .sitio__imagen-placeholder {
   width: 100%;
+
   height: 230px;
 
   object-fit: cover;
@@ -597,6 +610,7 @@
   display: flex;
 
   align-items: center;
+
   justify-content: center;
 
   background: #dddddd;
@@ -604,7 +618,9 @@
   font-size: 50px;
 }
 
-/* Contenido */
+/* =========================================================
+   CONTENIDO SITIO
+========================================================= */
 
 .sitio__contenido {
   display: flex;
@@ -649,7 +665,7 @@
 }
 
 /* =========================================================
-   BOTÓN LUGARES TURÍSTICOS
+   BOTÓN LUGARES
 ========================================================= */
 
 .sitio__boton {
@@ -716,7 +732,9 @@
   overflow: hidden;
 }
 
-/* Fondo verde */
+/* =========================================================
+   FONDO VERDE OFFLINE
+========================================================= */
 
 .offline__contenido::after {
   content: "";
@@ -724,9 +742,11 @@
   position: absolute;
 
   right: 0;
+
   top: 0;
 
   width: 65%;
+
   height: 100%;
 
   background: #cce8cc;
@@ -736,35 +756,47 @@
   z-index: 0;
 }
 
-/* Mapa */
+/* =========================================================
+   MAPA OFFLINE
+========================================================= */
 
-.offline__contenido::before {
-  content: "";
-
+.offline__mapa {
   position: absolute;
 
   right: 80px;
+
   top: 50%;
 
   width: 260px;
+
   height: 260px;
 
   transform: translateY(-50%);
 
+  z-index: 1;
+
   border-radius: 50%;
 
-  background-image: url("../../assets/mapa.png");
-
-  background-size: cover;
-
-  background-position: center;
-
-  z-index: 1;
+  overflow: hidden;
 
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
-/* Texto */
+.offline__mapa img {
+  width: 100%;
+
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  object-position: center;
+}
+
+/* =========================================================
+   TEXTO OFFLINE
+========================================================= */
 
 .offline__texto {
   position: relative;
@@ -804,6 +836,7 @@
   display: inline-flex;
 
   align-items: center;
+
   justify-content: center;
 
   padding: 12px 24px;
@@ -845,36 +878,6 @@
 }
 
 /* =========================================================
-   FOOTER
-========================================================= */
-
-.footer {
-  padding: 45px 30px;
-
-  background: #304f35;
-
-  color: white;
-
-  text-align: center;
-}
-
-.footer h2 {
-  margin: 0 0 10px;
-
-  font-size: 25px;
-
-  color: white;
-}
-
-.footer p {
-  margin: 0;
-
-  font-size: 14px;
-
-  color: #dce9dc;
-}
-
-/* =========================================================
    TABLET
 ========================================================= */
 
@@ -910,7 +913,9 @@
   }
 
   .agenda .section__header {
-    grid-template-columns: 1fr 320px;
+    grid-template-columns:
+      1fr
+      320px;
 
     gap: 40px;
   }
@@ -931,10 +936,11 @@
     padding: 40px;
   }
 
-  .offline__contenido::before {
+  .offline__mapa {
     right: 40px;
 
     width: 210px;
+
     height: 210px;
   }
 
@@ -948,20 +954,12 @@
 ========================================================= */
 
 @media (max-width: 599px) {
-  /* HERO */
+  /* =======================================================
+     HERO
+  ======================================================= */
 
   .hero {
     min-height: 620px;
-  }
-
-  .hero::before {
-    top: 20px;
-    left: 20px;
-
-    width: 125px;
-    min-height: 50px;
-
-    font-size: 12px;
   }
 
   .hero__contenido {
@@ -1004,10 +1002,13 @@
 
   .hero__buscador button {
     width: 54px;
+
     height: 54px;
   }
 
-  /* SECCIONES */
+  /* =======================================================
+     SECCIONES
+  ======================================================= */
 
   .section__header {
     padding: 50px 24px 25px;
@@ -1023,7 +1024,9 @@
     font-size: 14px;
   }
 
-  /* AGENDA */
+  /* =======================================================
+     AGENDA
+  ======================================================= */
 
   .agenda {
     padding: 50px 20px 50px;
@@ -1071,7 +1074,9 @@
     height: 220px;
   }
 
-  /* LUGARES */
+  /* =======================================================
+     LUGARES
+  ======================================================= */
 
   .lugares {
     padding-bottom: 50px;
@@ -1090,7 +1095,9 @@
     height: 210px;
   }
 
-  /* OFFLINE */
+  /* =======================================================
+     OFFLINE
+  ======================================================= */
 
   .offline {
     padding: 50px 20px;
@@ -1122,6 +1129,7 @@
     font-size: 14px;
 
     margin-left: auto;
+
     margin-right: auto;
   }
 
@@ -1141,7 +1149,7 @@
     border-radius: 120px 0 0 0;
   }
 
-  .offline__contenido::before {
+  .offline__mapa {
     right: 50%;
 
     top: auto;
@@ -1149,19 +1157,10 @@
     bottom: 35px;
 
     width: 190px;
+
     height: 190px;
 
     transform: translateX(50%);
-  }
-
-  /* FOOTER */
-
-  .footer {
-    padding: 35px 20px;
-  }
-
-  .footer h2 {
-    font-size: 22px;
   }
 }
 
@@ -1169,41 +1168,60 @@
    FORZAR BOTONES VERDES
 ========================================================= */
 
-/* Botones de lugares turísticos */
 .lugares button,
 .sitios__grid button {
   background-color: #5b8c5a !important;
+
   color: #ffffff !important;
+
   border: none !important;
+
   border-radius: 10px !important;
+
   padding: 11px 18px !important;
+
   font-weight: 600 !important;
+
   cursor: pointer;
+
   transition: all 0.2s ease;
 }
 
 .lugares button:hover,
 .sitios__grid button:hover {
   background-color: #456f46 !important;
+
   color: #ffffff !important;
 }
 
-/* Botón de Offline */
+/* =========================================================
+   BOTÓN OFFLINE
+========================================================= */
+
 .offline button,
 .offline a {
   background-color: #5b8c5a !important;
+
   color: #ffffff !important;
+
   border: none !important;
+
   border-radius: 10px !important;
+
   padding: 12px 24px !important;
+
   font-weight: 600 !important;
+
   text-decoration: none !important;
+
   cursor: pointer;
+
   transition: all 0.2s ease;
 }
 
 .offline button:hover,
 .offline a:hover {
   background-color: #456f46 !important;
+
   color: #ffffff !important;
 }

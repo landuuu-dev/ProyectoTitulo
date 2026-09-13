@@ -1,0 +1,237 @@
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer {
+  width: 100%;
+
+  background: #304f35;
+
+  color: #ffffff;
+
+  margin: 0;
+
+  padding: 55px 50px 0;
+}
+
+/* =========================================================
+   CONTENIDO
+========================================================= */
+
+.footer__contenido {
+  width: 100%;
+
+  max-width: 1100px;
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns:
+    2fr
+    1fr
+    1fr;
+
+  gap: 70px;
+
+  padding-bottom: 45px;
+}
+
+/* =========================================================
+   MARCA
+========================================================= */
+
+.footer__marca {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+}
+
+.footer__logo {
+  margin-bottom: 14px;
+
+  color: #ffffff;
+
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+
+  font-size: 25px;
+
+  font-weight: 700;
+
+  line-height: 1.2;
+
+  text-decoration: none;
+
+  transition: opacity 0.2s ease;
+}
+
+.footer__logo:hover {
+  opacity: 0.8;
+}
+
+.footer__marca p {
+  max-width: 330px;
+
+  margin: 0;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+
+  color: #dce9dc;
+}
+
+/* =========================================================
+   SECCIONES
+========================================================= */
+
+.footer__seccion {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  gap: 10px;
+}
+
+.footer__seccion h3 {
+  margin: 0 0 8px;
+
+  font-size: 16px;
+
+  font-weight: 700;
+
+  color: #ffffff;
+}
+
+.footer__seccion a {
+  color: #dce9dc;
+
+  font-size: 14px;
+
+  text-decoration: none;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.footer__seccion a:hover {
+  color: #ffffff;
+
+  transform: translateX(3px);
+}
+
+/* =========================================================
+   PARTE INFERIOR
+========================================================= */
+
+.footer__inferior {
+  width: 100%;
+
+  max-width: 1100px;
+
+  margin: 0 auto;
+
+  padding: 20px 0;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 20px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.footer__inferior p {
+  margin: 0;
+
+  font-size: 12px;
+
+  color: #c9dac9;
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 45px 30px 0;
+  }
+
+  .footer__contenido {
+    grid-template-columns:
+      1fr
+      1fr;
+
+    gap: 35px;
+  }
+
+  .footer__marca {
+    grid-column: 1 / -1;
+  }
+
+  .footer__inferior {
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
+  }
+}
+
+/* =========================================================
+   CELULAR
+========================================================= */
+
+@media (max-width: 480px) {
+  .footer {
+    padding: 40px 22px 0;
+  }
+
+  .footer__contenido {
+    grid-template-columns: 1fr;
+
+    gap: 30px;
+
+    padding-bottom: 35px;
+  }
+
+  .footer__marca {
+    grid-column: auto;
+
+    align-items: center;
+
+    text-align: center;
+  }
+
+  .footer__marca p {
+    max-width: 280px;
+  }
+
+  .footer__seccion {
+    align-items: center;
+
+    text-align: center;
+  }
+
+  .footer__logo {
+    font-size: 23px;
+  }
+
+  .footer__inferior {
+    gap: 8px;
+
+    padding: 18px 0;
+  }
+}
