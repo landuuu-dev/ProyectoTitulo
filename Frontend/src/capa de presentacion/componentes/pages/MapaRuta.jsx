@@ -19,7 +19,7 @@ import {
   guardarRutaOffline,
   obtenerRutaOffline,
   obtenerRecursoOffline,
-} from "../../servicios/almacenamientoOffline";
+} from "../../../capa de persistencia local/almacenamientoOffline";
 
 /* =========================================================
    ICONOS

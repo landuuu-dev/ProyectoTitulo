@@ -1,5 +1,5 @@
 import React from "react";
-import { useIdioma } from "../../contextos/IdiomaContext";
+import { useIdioma } from "../../../capa de negocio/contextos/IdiomaContext";
 import "../estilos/estilos-selector-idioma.css";
 
 export default function SelectorIdioma() {

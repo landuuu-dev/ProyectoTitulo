@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-import { useIdioma } from "../../contextos/IdiomaContext";
+import { useIdioma } from "../contextos/IdiomaContext";
 
 export default function TraductorPagina() {
   const { idioma, traducirTextos } = useIdioma();

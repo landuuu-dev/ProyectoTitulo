@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import ModalDetalle from "../componentes-fijos/ModalDetalle";
 
 import "./estilosPages/eventos.css";
-import cerroImg from "../../assets/cerro.png";
+import cerroImg from "../../../assets/cerro.png";
 
 const API_URL = import.meta.env.VITE_API_URL;
 

@@ -3,9 +3,9 @@ import ReactDOM from "react-dom/client";
 
 import App from "./App";
 
-import { IdiomaProvider } from "./contextos/IdiomaContext";
+import { IdiomaProvider } from "./capa de negocio/contextos/IdiomaContext";
 
-import TraductorPagina from "./componentes/componentes-fijos/TraductorPagina";
+import TraductorPagina from "./capa de negocio/contextos/TraductorPagina";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

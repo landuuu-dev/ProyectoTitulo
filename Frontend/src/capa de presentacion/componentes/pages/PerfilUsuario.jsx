@@ -8,7 +8,7 @@ import {
   marcarSitioDescargado,
   obtenerSitiosDescargados,
   descargarMapaSitio,
-} from "../../servicios/almacenamientoOffline";
+} from "../../../capa de persistencia local/almacenamientoOffline";
 
 import "./estilosPages/perfilUsuario.css";
 

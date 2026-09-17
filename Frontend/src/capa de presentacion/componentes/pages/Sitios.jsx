@@ -4,7 +4,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import MapaRuta from "./MapaRuta";
 import ModalDetalle from "../componentes-fijos/ModalDetalle";
 import "./estilosPages/sitios.css";
-import cerroImg from "../../assets/cerro.png";
+import cerroImg from "../../../assets/cerro.png";
 
 import {
   guardarSitiosOffline,
@@ -16,7 +16,7 @@ import {
   verificarSitioDescargado,
   obtenerSitiosDescargados,
   descargarMapaSitio,
-} from "../../servicios/almacenamientoOffline";
+} from "../../../capa de persistencia local/almacenamientoOffline";
 
 const API_URL = import.meta.env.VITE_API_URL;
 

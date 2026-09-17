@@ -1,15 +1,15 @@
 import "./App.css";
 
-import Navbar from "./componentes/componentes-fijos/Navbar";
-import Footer from "./componentes/componentes-fijos/Footer";
+import Navbar from "./capa de presentacion/componentes/componentes-fijos/Navbar";
+import Footer from "./capa de presentacion/componentes/componentes-fijos/Footer";
 
-import Eventos from "./componentes/pages/Eventos";
-import Sitios from "./componentes/pages/Sitios";
-import Registro from "./componentes/pages/Registro";
-import InicioSesion from "./componentes/pages/InicioSesion";
-import Home from "./componentes/pages/Home";
-import PanelAdministracion from "./componentes/pages/PanelAdministracion";
-import PerfilUsuario from "./componentes/pages/PerfilUsuario";
+import Eventos from "./capa de presentacion/componentes/pages/Eventos";
+import Sitios from "./capa de presentacion/componentes/pages/Sitios";
+import Registro from "./capa de presentacion/componentes/pages/Registro";
+import InicioSesion from "./capa de presentacion/componentes/pages/InicioSesion";
+import Home from "./capa de presentacion/componentes/pages/Home";
+import PanelAdministracion from "./capa de presentacion/componentes/pages/PanelAdministracion";
+import PerfilUsuario from "./capa de presentacion/componentes/pages/PerfilUsuario";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 

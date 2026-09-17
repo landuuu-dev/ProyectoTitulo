@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./estilosPages/home.css";
 
-import cerroImg from "../../assets/cerro.png";
-import mapaImg from "../../assets/mapa.jpeg";
+import cerroImg from "../../../assets/cerro.png";
+import mapaImg from "../../../assets/mapa.jpeg";
 
 import ModalDetalle from "../componentes-fijos/ModalDetalle";
 
