@@ -33,9 +33,16 @@ export default function Home() {
       try {
         const response = await axios.get(`${API_URL}/eventos`);
 
-        // Mostrar solamente 1 evento
-        if (response.data && response.data.length > 0) {
-          setEvento(response.data[0]);
+        // Filtrar solamente eventos aprobados
+        const eventosAprobados = response.data.filter(
+          (evento) => evento.estado_moderacion === "Aprobado",
+        );
+
+        // Mostrar solamente 1 evento aprobado
+        if (eventosAprobados.length > 0) {
+          setEvento(eventosAprobados[0]);
+        } else {
+          setEvento(null);
         }
       } catch (error) {
         console.error("Error al traer evento:", error);

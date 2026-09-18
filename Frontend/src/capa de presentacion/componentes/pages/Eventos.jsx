@@ -68,7 +68,11 @@ export default function Eventos() {
 
       const response = await axios.get(`${API_URL}/eventos`);
 
-      setEventos(response.data);
+      const eventosAprobados = response.data.filter(
+        (evento) => evento.estado_moderacion === "Aprobado",
+      );
+
+      setEventos(eventosAprobados);
     } catch (error) {
       console.error("Error cargando eventos:", error);
 
