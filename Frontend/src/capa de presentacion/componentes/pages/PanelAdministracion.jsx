@@ -4,7 +4,8 @@ import "./estilosPages/panelAdministracion.css";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const ESTADOS_MODERACION = ["Pendiente", "Aprobado", "Rechazado"];
-const FUENTES_ORIGEN = ["Manual", "Importado"];
+
+const FUENTES_ORIGEN = ["Manual", "Importado", "Scraper_Muni"];
 
 const SITIO_VACIO = {
   titulo_es: "",
@@ -37,6 +38,7 @@ export default function PanelAdministracion() {
 
   const [cargando, setCargando] = useState(false);
   const [guardando, setGuardando] = useState(false);
+  const [actualizandoScraper, setActualizandoScraper] = useState(false);
 
   const [error, setError] = useState("");
   const [mensaje, setMensaje] = useState("");
@@ -126,6 +128,60 @@ export default function PanelAdministracion() {
       setCargando(false);
     }
   }, []);
+
+  // =========================================================
+  // ACTUALIZAR SCRAPER MUNICIPALIDAD
+  // =========================================================
+
+  const actualizarScraper = async () => {
+    try {
+      setActualizandoScraper(true);
+      setError("");
+      setMensaje("");
+
+      const token = obtenerToken();
+
+      if (!token) {
+        throw new Error("No hay una sesión activa. Inicia sesión nuevamente.");
+      }
+
+      const res = await fetch(`${API_URL}/scraper/eventos`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      let data = {};
+
+      try {
+        data = await res.json();
+      } catch {
+        data = {};
+      }
+
+      if (!res.ok) {
+        throw new Error(data.error || "No se pudo actualizar el scraper.");
+      }
+
+      setMensaje(
+        `Scraper actualizado correctamente. ` +
+          `Encontrados: ${data.encontrados ?? 0} | ` +
+          `Nuevos: ${data.insertados ?? 0} | ` +
+          `Duplicados: ${data.duplicados ?? 0} | ` +
+          `Errores: ${data.errores ?? 0}`,
+      );
+
+      // Recargar la tabla de eventos después del scraping
+      await cargarEventos();
+    } catch (e) {
+      console.error("Error actualizando scraper:", e);
+
+      setError(e.message || "No se pudo actualizar el scraper.");
+    } finally {
+      setActualizandoScraper(false);
+    }
+  };
 
   // =========================================================
   // CARGAR CATEGORÍAS
@@ -397,7 +453,9 @@ export default function PanelAdministracion() {
 
         body = {
           titulo: formEvento.titulo.trim(),
+
           descripcion: formEvento.descripcion.trim(),
+
           lugar: formEvento.lugar.trim(),
 
           fecha_inicio: formEvento.fecha_inicio
@@ -626,6 +684,7 @@ export default function PanelAdministracion() {
 
           <div>
             <h1>Rastros del desierto</h1>
+
             <span>Panel de administración</span>
           </div>
         </div>
@@ -669,9 +728,32 @@ export default function PanelAdministracion() {
             </p>
           </div>
 
-          <button className="pa-primary-button" onClick={abrirCrear}>
-            + {vista === "sitios" ? "Nuevo sitio" : "Nuevo evento"}
-          </button>
+          {/* =================================================
+              BOTONES
+          ================================================= */}
+
+          <div className="pa-toolbar-actions">
+            {vista === "eventos" && (
+              <button
+                type="button"
+                className="pa-secondary-button"
+                onClick={actualizarScraper}
+                disabled={actualizandoScraper || guardando}
+              >
+                {actualizandoScraper
+                  ? "🔄 Actualizando..."
+                  : "🔄 Actualizar eventos"}
+              </button>
+            )}
+
+            <button
+              className="pa-primary-button"
+              onClick={abrirCrear}
+              disabled={actualizandoScraper}
+            >
+              +{vista === "sitios" ? " Nuevo sitio" : " Nuevo evento"}
+            </button>
+          </div>
         </div>
 
         {/* ===================================================
