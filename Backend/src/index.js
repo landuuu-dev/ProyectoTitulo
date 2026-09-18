@@ -7,6 +7,7 @@ import categoriasRoutes from "./Routes/categoria.routes.js"; // <--- Importar la
 import favoritosRoutes from "./Routes/favoritos.routes.js"; // <--- Módulo de favoritos
 import cors from "cors";
 import traduccionRoutes from "./Routes/traduccion.routes.js";
+import scraperRoutes from "./Routes/scraper.routes.js";
 
 process.loadEnvFile();
 const PORT = process.env.PORT ?? 3000;
@@ -26,6 +27,7 @@ app.use(sitiosRoutes);
 app.use(eventosRoutes);
 app.use(categoriasRoutes);
 app.use(favoritosRoutes);
+app.use(scraperRoutes);
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);
