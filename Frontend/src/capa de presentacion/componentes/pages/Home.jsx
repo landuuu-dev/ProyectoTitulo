@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+
 import "./estilosPages/home.css";
 
 import cerroImg from "../../../assets/cerro.png";
@@ -14,7 +15,9 @@ export default function Home() {
   const navigate = useNavigate();
 
   const [busqueda, setBusqueda] = useState("");
+
   const [evento, setEvento] = useState(null);
+
   const [sitios, setSitios] = useState([]);
 
   // =========================================
@@ -22,6 +25,7 @@ export default function Home() {
   // =========================================
 
   const [modalAbierto, setModalAbierto] = useState(false);
+
   const [detalleModal, setDetalleModal] = useState(null);
 
   // =========================================
@@ -33,10 +37,25 @@ export default function Home() {
       try {
         const response = await axios.get(`${API_URL}/eventos`);
 
-        // Filtrar solamente eventos aprobados
-        const eventosAprobados = response.data.filter(
-          (evento) => evento.estado_moderacion === "Aprobado",
-        );
+        console.log("EVENTOS RECIBIDOS EN HOME:", response.data);
+
+        /*
+         * IMPORTANTE:
+         * Solo permitimos eventos cuyo estado sea Aprobado.
+         *
+         * trim() elimina espacios.
+         * toLowerCase() evita problemas de mayúsculas/minúsculas.
+         */
+
+        const eventosAprobados = response.data.filter((evento) => {
+          const estado = String(evento.estado_moderacion || "")
+            .trim()
+            .toLowerCase();
+
+          return estado === "aprobado";
+        });
+
+        console.log("EVENTOS APROBADOS EN HOME:", eventosAprobados);
 
         // Mostrar solamente 1 evento aprobado
         if (eventosAprobados.length > 0) {
@@ -46,6 +65,8 @@ export default function Home() {
         }
       } catch (error) {
         console.error("Error al traer evento:", error);
+
+        setEvento(null);
       }
     };
 
@@ -54,9 +75,13 @@ export default function Home() {
         const response = await axios.get(`${API_URL}/sitios`);
 
         // Mostrar solamente los 3 primeros sitios
-        setSitios(response.data.slice(0, 3));
+        setSitios(
+          Array.isArray(response.data) ? response.data.slice(0, 3) : [],
+        );
       } catch (error) {
         console.error("Error al traer sitios:", error);
+
+        setSitios([]);
       }
     };
 
@@ -83,7 +108,13 @@ export default function Home() {
   const formatearFecha = (fecha) => {
     if (!fecha) return "";
 
-    return new Date(fecha).toLocaleDateString("es-CL", {
+    const fechaFormateada = new Date(fecha);
+
+    if (Number.isNaN(fechaFormateada.getTime())) {
+      return "";
+    }
+
+    return fechaFormateada.toLocaleDateString("es-CL", {
       day: "2-digit",
       month: "2-digit",
       year: "numeric",
@@ -111,6 +142,10 @@ export default function Home() {
     setModalAbierto(false);
     setDetalleModal(null);
   };
+
+  // =========================================
+  // RENDER
+  // =========================================
 
   return (
     <main className="home">
@@ -166,6 +201,10 @@ export default function Home() {
               que puedas disfrutar cada experiencia.
             </p>
           </div>
+
+          {/* =================================================
+              SOLO SE RENDERIZA SI EXISTE UN EVENTO APROBADO
+          ================================================= */}
 
           {evento && (
             <article className="sitio__card evento__card">

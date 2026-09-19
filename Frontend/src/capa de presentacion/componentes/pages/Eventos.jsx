@@ -68,9 +68,20 @@ export default function Eventos() {
 
       const response = await axios.get(`${API_URL}/eventos`);
 
-      const eventosAprobados = response.data.filter(
-        (evento) => evento.estado_moderacion === "Aprobado",
-      );
+      console.log("TODOS LOS EVENTOS:", response.data);
+
+      const eventosAprobados = response.data.filter((evento) => {
+        console.log(
+          "Evento:",
+          evento.titulo,
+          "| estado:",
+          evento.estado_moderacion,
+        );
+
+        return evento.estado_moderacion === "Aprobado";
+      });
+
+      console.log("SOLO APROBADOS:", eventosAprobados);
 
       setEventos(eventosAprobados);
     } catch (error) {
