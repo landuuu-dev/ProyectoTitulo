@@ -3,9 +3,25 @@ import "./estilosPages/panelAdministracion.css";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
+// =========================================================
+// CLOUDINARY
+// =========================================================
+
+const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+
+const CLOUDINARY_UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
+
+// =========================================================
+// CONFIGURACIÓN
+// =========================================================
+
 const ESTADOS_MODERACION = ["Pendiente", "Aprobado", "Rechazado"];
 
 const FUENTES_ORIGEN = ["Manual", "Importado", "Scraper_Muni"];
+
+// =========================================================
+// SITIO VACÍO
+// =========================================================
 
 const SITIO_VACIO = {
   titulo_es: "",
@@ -18,6 +34,10 @@ const SITIO_VACIO = {
   audioguia_url: "",
 };
 
+// =========================================================
+// EVENTO VACÍO
+// =========================================================
+
 const EVENTO_VACIO = {
   titulo: "",
   descripcion: "",
@@ -29,26 +49,53 @@ const EVENTO_VACIO = {
   id_categoria: "",
 };
 
+// =========================================================
+// COMPONENTE
+// =========================================================
+
 export default function PanelAdministracion() {
+  // =======================================================
+  // VISTA
+  // =======================================================
+
   const [vista, setVista] = useState("sitios");
+
+  // =======================================================
+  // DATOS
+  // =======================================================
 
   const [sitios, setSitios] = useState([]);
   const [eventos, setEventos] = useState([]);
   const [categorias, setCategorias] = useState([]);
 
+  // =======================================================
+  // ESTADOS
+  // =======================================================
+
   const [cargando, setCargando] = useState(false);
   const [guardando, setGuardando] = useState(false);
   const [actualizandoScraper, setActualizandoScraper] = useState(false);
 
+  const [subiendoAudioguia, setSubiendoAudioguia] = useState(false);
+
   const [error, setError] = useState("");
   const [mensaje, setMensaje] = useState("");
+
+  // =======================================================
+  // FORMULARIO
+  // =======================================================
 
   const [formAbierto, setFormAbierto] = useState(false);
   const [modoEdicion, setModoEdicion] = useState(false);
   const [idEnEdicion, setIdEnEdicion] = useState(null);
 
   const [formSitio, setFormSitio] = useState(SITIO_VACIO);
+
   const [formEvento, setFormEvento] = useState(EVENTO_VACIO);
+
+  // =======================================================
+  // CONFIRMACIÓN
+  // =======================================================
 
   const [confirmarId, setConfirmarId] = useState(null);
 
@@ -69,6 +116,7 @@ export default function PanelAdministracion() {
 
     return {
       "Content-Type": "application/json",
+
       ...(token
         ? {
             Authorization: `Bearer ${token}`,
@@ -97,6 +145,7 @@ export default function PanelAdministracion() {
       setSitios(Array.isArray(data) ? data : []);
     } catch (e) {
       console.error(e);
+
       setError(e.message || "Error al cargar los sitios.");
     } finally {
       setCargando(false);
@@ -123,6 +172,7 @@ export default function PanelAdministracion() {
       setEventos(Array.isArray(data) ? data : []);
     } catch (e) {
       console.error(e);
+
       setError(e.message || "Error al cargar los eventos.");
     } finally {
       setCargando(false);
@@ -147,6 +197,7 @@ export default function PanelAdministracion() {
 
       const res = await fetch(`${API_URL}/scraper/eventos`, {
         method: "GET",
+
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -172,7 +223,6 @@ export default function PanelAdministracion() {
           `Errores: ${data.errores ?? 0}`,
       );
 
-      // Recargar la tabla de eventos después del scraping
       await cargarEventos();
     } catch (e) {
       console.error("Error actualizando scraper:", e);
@@ -193,6 +243,7 @@ export default function PanelAdministracion() {
 
       if (!res.ok) {
         console.error("No se pudieron cargar las categorías.");
+
         return;
       }
 
@@ -220,14 +271,16 @@ export default function PanelAdministracion() {
 
   function cambiarVista(nuevaVista) {
     setVista(nuevaVista);
+
     setError("");
     setMensaje("");
+
     setFormAbierto(false);
     setConfirmarId(null);
   }
 
   // =========================================================
-  // ABRIR FORMULARIO CREAR
+  // ABRIR CREAR
   // =========================================================
 
   function abrirCrear() {
@@ -246,11 +299,12 @@ export default function PanelAdministracion() {
 
     setError("");
     setMensaje("");
+
     setFormAbierto(true);
   }
 
   // =========================================================
-  // ABRIR FORMULARIO EDITAR
+  // ABRIR EDITAR
   // =========================================================
 
   function abrirEditar(item) {
@@ -261,12 +315,19 @@ export default function PanelAdministracion() {
 
       setFormSitio({
         titulo_es: item.titulo_es || "",
+
         titulo_en: item.titulo_en || "",
+
         descripcion_es: item.descripcion_es || "",
+
         descripcion_en: item.descripcion_en || "",
+
         latitud: item.latitud ?? "",
+
         longitud: item.longitud ?? "",
+
         imagen_url: item.imagen_url || "",
+
         audioguia_url: item.audioguia_url || "",
       });
     } else {
@@ -280,18 +341,26 @@ export default function PanelAdministracion() {
 
       setFormEvento({
         titulo: item.titulo || "",
+
         descripcion: item.descripcion || "",
+
         lugar: item.lugar || "",
+
         fecha_inicio: fecha,
+
         imagen_url: item.imagen_url || "",
+
         estado_moderacion: item.estado_moderacion || "Pendiente",
+
         fuente_origen: item.fuente_origen || "Manual",
+
         id_categoria: item.id_categoria ?? "",
       });
     }
 
     setError("");
     setMensaje("");
+
     setFormAbierto(true);
   }
 
@@ -300,11 +369,12 @@ export default function PanelAdministracion() {
   // =========================================================
 
   function cerrarFormulario() {
-    if (guardando) {
+    if (guardando || subiendoAudioguia) {
       return;
     }
 
     setFormAbierto(false);
+
     setModoEdicion(false);
     setIdEnEdicion(null);
 
@@ -344,11 +414,147 @@ export default function PanelAdministracion() {
   }
 
   // =========================================================
+  // SUBIR AUDIO A CLOUDINARY
+  // =========================================================
+
+  const subirAudioguia = async (e) => {
+    const archivo = e.target.files?.[0];
+
+    if (!archivo) {
+      return;
+    }
+
+    // -------------------------------------------------------
+    // VALIDAR TIPO
+    // -------------------------------------------------------
+
+    if (!archivo.type.startsWith("audio/")) {
+      setError("El archivo seleccionado no es un audio válido.");
+
+      e.target.value = "";
+
+      return;
+    }
+
+    // -------------------------------------------------------
+    // VALIDAR TAMAÑO
+    // -------------------------------------------------------
+
+    const MAXIMO_MB = 20;
+
+    const maximoBytes = MAXIMO_MB * 1024 * 1024;
+
+    if (archivo.size > maximoBytes) {
+      setError(`La audioguía no puede superar los ${MAXIMO_MB} MB.`);
+
+      e.target.value = "";
+
+      return;
+    }
+
+    try {
+      setSubiendoAudioguia(true);
+
+      setError("");
+      setMensaje("");
+
+      // -----------------------------------------------------
+      // VALIDAR VARIABLES
+      // -----------------------------------------------------
+
+      if (!CLOUDINARY_CLOUD_NAME) {
+        throw new Error(
+          "Falta configurar VITE_CLOUDINARY_CLOUD_NAME en el archivo .env.",
+        );
+      }
+
+      if (!CLOUDINARY_UPLOAD_PRESET) {
+        throw new Error(
+          "Falta configurar VITE_CLOUDINARY_UPLOAD_PRESET en el archivo .env.",
+        );
+      }
+
+      // -----------------------------------------------------
+      // FORM DATA
+      // -----------------------------------------------------
+
+      const formData = new FormData();
+
+      formData.append("file", archivo);
+
+      formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+
+      formData.append("folder", "rastros-del-desierto/audioguias");
+
+      // -----------------------------------------------------
+      // SUBIR
+      // -----------------------------------------------------
+
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/video/upload`,
+        {
+          method: "POST",
+          body: formData,
+        },
+      );
+
+      const data = await response.json();
+
+      console.log("Respuesta Cloudinary:", data);
+
+      if (!response.ok) {
+        throw new Error(
+          data.error?.message || "No se pudo subir la audioguía a Cloudinary.",
+        );
+      }
+
+      // -----------------------------------------------------
+      // GUARDAR URL EN EL FORMULARIO
+      // -----------------------------------------------------
+
+      if (!data.secure_url) {
+        throw new Error("Cloudinary no devolvió una URL para el audio.");
+      }
+
+      setFormSitio((prev) => ({
+        ...prev,
+        audioguia_url: data.secure_url,
+      }));
+
+      setMensaje("Audioguía subida correctamente.");
+    } catch (error) {
+      console.error("Error subiendo audioguía:", error);
+
+      setError(error.message || "No se pudo subir la audioguía.");
+    } finally {
+      setSubiendoAudioguia(false);
+
+      // Permitir seleccionar nuevamente
+      // el mismo archivo
+      e.target.value = "";
+    }
+  };
+
+  // =========================================================
+  // QUITAR AUDIO
+  // =========================================================
+
+  function quitarAudioguia() {
+    setFormSitio((prev) => ({
+      ...prev,
+      audioguia_url: "",
+    }));
+
+    setMensaje("Audioguía quitada del formulario.");
+  }
+
+  // =========================================================
   // GUARDAR
   // =========================================================
 
   async function guardar() {
     setGuardando(true);
+
     setError("");
     setMensaje("");
 
@@ -368,9 +574,9 @@ export default function PanelAdministracion() {
       // =====================================================
 
       if (vista === "sitios") {
-        // -----------------------------------------
-        // VALIDAR CAMPOS OBLIGATORIOS
-        // -----------------------------------------
+        // ---------------------------------------------------
+        // VALIDACIONES
+        // ---------------------------------------------------
 
         if (!formSitio.titulo_es.trim()) {
           throw new Error("El título en español es obligatorio.");
@@ -397,6 +603,7 @@ export default function PanelAdministracion() {
         }
 
         const latitud = Number(formSitio.latitud);
+
         const longitud = Number(formSitio.longitud);
 
         if (Number.isNaN(latitud)) {
@@ -407,9 +614,9 @@ export default function PanelAdministracion() {
           throw new Error("La longitud debe ser un número válido.");
         }
 
-        // -----------------------------------------
+        // ---------------------------------------------------
         // URL
-        // -----------------------------------------
+        // ---------------------------------------------------
 
         url = modoEdicion
           ? `${API_URL}/sitios/${idEnEdicion}`
@@ -417,18 +624,25 @@ export default function PanelAdministracion() {
 
         method = modoEdicion ? "PUT" : "POST";
 
-        // -----------------------------------------
+        // ---------------------------------------------------
         // BODY
-        // -----------------------------------------
+        // ---------------------------------------------------
 
         body = {
           titulo_es: formSitio.titulo_es.trim(),
+
           titulo_en: formSitio.titulo_en.trim(),
+
           descripcion_es: formSitio.descripcion_es.trim(),
+
           descripcion_en: formSitio.descripcion_en.trim(),
+
           latitud,
+
           longitud,
+
           imagen_url: formSitio.imagen_url.trim(),
+
           audioguia_url: formSitio.audioguia_url.trim(),
         };
       }
@@ -566,6 +780,7 @@ export default function PanelAdministracion() {
     }
 
     setGuardando(true);
+
     setError("");
     setMensaje("");
 
@@ -715,6 +930,10 @@ export default function PanelAdministracion() {
       ===================================================== */}
 
       <main className="pa-main">
+        {/* ===================================================
+            TOOLBAR
+        =================================================== */}
+
         <div className="pa-toolbar">
           <div>
             <h2>
@@ -727,10 +946,6 @@ export default function PanelAdministracion() {
                 : "Administra los eventos culturales de la región."}
             </p>
           </div>
-
-          {/* =================================================
-              BOTONES
-          ================================================= */}
 
           <div className="pa-toolbar-actions">
             {vista === "eventos" && (
@@ -763,6 +978,7 @@ export default function PanelAdministracion() {
         {mensaje && (
           <div className="pa-alert pa-alert-success">
             <span>✓</span>
+
             {mensaje}
           </div>
         )}
@@ -770,6 +986,7 @@ export default function PanelAdministracion() {
         {error && (
           <div className="pa-alert pa-alert-error">
             <span>!</span>
+
             {error}
           </div>
         )}
@@ -783,6 +1000,7 @@ export default function PanelAdministracion() {
             {cargando ? (
               <div className="pa-empty">
                 <div className="pa-spinner"></div>
+
                 <p>Cargando sitios...</p>
               </div>
             ) : sitios.length === 0 ? (
@@ -881,6 +1099,7 @@ export default function PanelAdministracion() {
             {cargando ? (
               <div className="pa-empty">
                 <div className="pa-spinner"></div>
+
                 <p>Cargando eventos...</p>
               </div>
             ) : eventos.length === 0 ? (
@@ -999,6 +1218,10 @@ export default function PanelAdministracion() {
           }}
         >
           <div className="pa-modal">
+            {/* =================================================
+                HEADER MODAL
+            ================================================= */}
+
             <div className="pa-modal-header">
               <div>
                 <span className="pa-modal-label">
@@ -1014,7 +1237,7 @@ export default function PanelAdministracion() {
               <button
                 className="pa-modal-close"
                 onClick={cerrarFormulario}
-                disabled={guardando}
+                disabled={guardando || subiendoAudioguia}
               >
                 ×
               </button>
@@ -1104,6 +1327,10 @@ export default function PanelAdministracion() {
                   </div>
                 </div>
 
+                {/* =================================================
+                    IMAGEN
+                ================================================= */}
+
                 <div className="pa-form-group">
                   <label>URL de imagen</label>
 
@@ -1116,16 +1343,55 @@ export default function PanelAdministracion() {
                   />
                 </div>
 
+                {/* =================================================
+                    AUDIOGUIA CLOUDINARY
+                ================================================= */}
+
                 <div className="pa-form-group">
-                  <label>URL de audioguía</label>
+                  <label>Audioguía</label>
 
                   <input
-                    type="url"
-                    name="audioguia_url"
-                    value={formSitio.audioguia_url}
-                    onChange={cambiarSitio}
-                    placeholder="https://..."
+                    type="file"
+                    accept="audio/*"
+                    onChange={subirAudioguia}
+                    disabled={guardando || subiendoAudioguia}
                   />
+
+                  <small className="pa-help-text">
+                    Puedes subir MP3, WAV, M4A u otros formatos de audio. Máximo
+                    20 MB.
+                  </small>
+
+                  {/* SUBIENDO */}
+
+                  {subiendoAudioguia && (
+                    <div className="pa-upload-status">
+                      <div className="pa-spinner"></div>
+
+                      <span>Subiendo audioguía...</span>
+                    </div>
+                  )}
+
+                  {/* AUDIO CARGADO */}
+
+                  {formSitio.audioguia_url && !subiendoAudioguia && (
+                    <div className="pa-audioguia-preview">
+                      <p>
+                        <strong>🎧 Audioguía cargada</strong>
+                      </p>
+
+                      <audio controls src={formSitio.audioguia_url} />
+
+                      <button
+                        type="button"
+                        className="pa-remove-audio"
+                        onClick={quitarAudioguia}
+                        disabled={guardando}
+                      >
+                        Quitar audioguía
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -1255,14 +1521,14 @@ export default function PanelAdministracion() {
             )}
 
             {/* =================================================
-                ACCIONES
+                ACCIONES FORMULARIO
             ================================================= */}
 
             <div className="pa-form-actions">
               <button
                 className="pa-secondary-button"
                 onClick={cerrarFormulario}
-                disabled={guardando}
+                disabled={guardando || subiendoAudioguia}
               >
                 Cancelar
               </button>
@@ -1270,13 +1536,15 @@ export default function PanelAdministracion() {
               <button
                 className="pa-primary-button"
                 onClick={guardar}
-                disabled={guardando}
+                disabled={guardando || subiendoAudioguia}
               >
                 {guardando
                   ? "Guardando..."
-                  : modoEdicion
-                    ? "Guardar cambios"
-                    : "Crear"}
+                  : subiendoAudioguia
+                    ? "Subiendo..."
+                    : modoEdicion
+                      ? "Guardar cambios"
+                      : "Crear"}
               </button>
             </div>
           </div>

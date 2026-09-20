@@ -1066,3 +1066,58 @@
   gap: 12px;
   flex-wrap: wrap;
 }
+/* =========================================================
+   AUDIOGUIAS
+========================================================= */
+
+.pa-help-text {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: #777;
+  line-height: 1.4;
+}
+
+.pa-upload-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  background: #f5f3ee;
+  color: #555;
+}
+
+.pa-audioguia-preview {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  background: #f5f3ee;
+  border: 1px solid #e5e0d6;
+}
+
+.pa-audioguia-preview p {
+  margin: 0 0 12px;
+}
+
+.pa-audioguia-preview audio {
+  display: block;
+  width: 100%;
+  max-width: 500px;
+}
+
+.pa-remove-audio {
+  display: block;
+  margin-top: 10px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #b42318;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.pa-remove-audio:hover {
+  text-decoration: underline;
+}
