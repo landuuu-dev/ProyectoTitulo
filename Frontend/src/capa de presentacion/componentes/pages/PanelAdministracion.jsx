@@ -31,7 +31,8 @@ const SITIO_VACIO = {
   latitud: "",
   longitud: "",
   imagen_url: "",
-  audioguia_url: "",
+  audioguia_es_url: "",
+  audioguia_en_url: "",
 };
 
 // =========================================================
@@ -328,7 +329,8 @@ export default function PanelAdministracion() {
 
         imagen_url: item.imagen_url || "",
 
-        audioguia_url: item.audioguia_url || "",
+        audioguia_es_url: item.audioguia_es_url || "",
+        audioguia_en_url: item.audioguia_en_url || "",
       });
     } else {
       setIdEnEdicion(item.id_evento);
@@ -417,7 +419,7 @@ export default function PanelAdministracion() {
   // SUBIR AUDIO A CLOUDINARY
   // =========================================================
 
-  const subirAudioguia = async (e) => {
+  const subirAudioguia = async (e, idioma) => {
     const archivo = e.target.files?.[0];
 
     if (!archivo) {
@@ -484,7 +486,7 @@ export default function PanelAdministracion() {
 
       formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
 
-      formData.append("folder", "rastros-del-desierto/audioguias");
+      formData.append("folder", `rastros-del-desierto/audioguias/${idioma}`);
 
       // -----------------------------------------------------
       // SUBIR
@@ -516,12 +518,18 @@ export default function PanelAdministracion() {
         throw new Error("Cloudinary no devolvió una URL para el audio.");
       }
 
+      const campo = idioma === "es" ? "audioguia_es_url" : "audioguia_en_url";
+
       setFormSitio((prev) => ({
         ...prev,
-        audioguia_url: data.secure_url,
+        [campo]: data.secure_url,
       }));
 
-      setMensaje("Audioguía subida correctamente.");
+      setMensaje(
+        `Audioguía ${
+          idioma === "es" ? "en español" : "en inglés"
+        } subida correctamente.`,
+      );
     } catch (error) {
       console.error("Error subiendo audioguía:", error);
 
@@ -539,13 +547,19 @@ export default function PanelAdministracion() {
   // QUITAR AUDIO
   // =========================================================
 
-  function quitarAudioguia() {
+  function quitarAudioguia(idioma) {
+    const campo = idioma === "es" ? "audioguia_es_url" : "audioguia_en_url";
+
     setFormSitio((prev) => ({
       ...prev,
-      audioguia_url: "",
+      [campo]: "",
     }));
 
-    setMensaje("Audioguía quitada del formulario.");
+    setMensaje(
+      `Audioguía ${
+        idioma === "es" ? "en español" : "en inglés"
+      } quitada del formulario.`,
+    );
   }
 
   // =========================================================
@@ -643,7 +657,9 @@ export default function PanelAdministracion() {
 
           imagen_url: formSitio.imagen_url.trim(),
 
-          audioguia_url: formSitio.audioguia_url.trim(),
+          audioguia_es_url: formSitio.audioguia_es_url.trim(),
+
+          audioguia_en_url: formSitio.audioguia_en_url.trim(),
         };
       }
 
@@ -1344,51 +1360,86 @@ export default function PanelAdministracion() {
                 </div>
 
                 {/* =================================================
-                    AUDIOGUIA CLOUDINARY
+                    AUDIOGUIAS CLOUDINARY
                 ================================================= */}
 
                 <div className="pa-form-group">
-                  <label>Audioguía</label>
+                  <label>Audioguía en español</label>
 
                   <input
                     type="file"
                     accept="audio/*"
-                    onChange={subirAudioguia}
+                    onChange={(e) => subirAudioguia(e, "es")}
                     disabled={guardando || subiendoAudioguia}
                   />
 
                   <small className="pa-help-text">
-                    Puedes subir MP3, WAV, M4A u otros formatos de audio. Máximo
-                    20 MB.
+                    MP3, WAV, M4A u otros formatos de audio. Máximo 20 MB.
                   </small>
-
-                  {/* SUBIENDO */}
 
                   {subiendoAudioguia && (
                     <div className="pa-upload-status">
                       <div className="pa-spinner"></div>
-
                       <span>Subiendo audioguía...</span>
                     </div>
                   )}
 
-                  {/* AUDIO CARGADO */}
-
-                  {formSitio.audioguia_url && !subiendoAudioguia && (
+                  {formSitio.audioguia_es_url && !subiendoAudioguia && (
                     <div className="pa-audioguia-preview">
                       <p>
-                        <strong>🎧 Audioguía cargada</strong>
+                        <strong>🎧 Audioguía en español</strong>
                       </p>
 
-                      <audio controls src={formSitio.audioguia_url} />
+                      <audio controls src={formSitio.audioguia_es_url} />
 
                       <button
                         type="button"
                         className="pa-remove-audio"
-                        onClick={quitarAudioguia}
+                        onClick={() => quitarAudioguia("es")}
                         disabled={guardando}
                       >
-                        Quitar audioguía
+                        Quitar audioguía en español
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                <div className="pa-form-group">
+                  <label>Audioguía en inglés</label>
+
+                  <input
+                    type="file"
+                    accept="audio/*"
+                    onChange={(e) => subirAudioguia(e, "en")}
+                    disabled={guardando || subiendoAudioguia}
+                  />
+
+                  <small className="pa-help-text">
+                    MP3, WAV, M4A u otros formatos de audio. Máximo 20 MB.
+                  </small>
+
+                  {subiendoAudioguia && (
+                    <div className="pa-upload-status">
+                      <div className="pa-spinner"></div>
+                      <span>Subiendo audioguía...</span>
+                    </div>
+                  )}
+
+                  {formSitio.audioguia_en_url && !subiendoAudioguia && (
+                    <div className="pa-audioguia-preview">
+                      <p>
+                        <strong>🎧 Audioguía en inglés</strong>
+                      </p>
+
+                      <audio controls src={formSitio.audioguia_en_url} />
+
+                      <button
+                        type="button"
+                        className="pa-remove-audio"
+                        onClick={() => quitarAudioguia("en")}
+                        disabled={guardando}
+                      >
+                        Quitar audioguía en inglés
                       </button>
                     </div>
                   )}

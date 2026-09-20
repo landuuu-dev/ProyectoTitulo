@@ -244,14 +244,29 @@ export default function Sitios() {
       }
 
       try {
-        const audio = await obtenerRecursoOffline(idSitio, "audioguia");
+        const audioEs = await obtenerRecursoOffline(idSitio, "audioguia_es");
 
-        if (audio?.blob) {
-          nuevosAudios[idSitio] = URL.createObjectURL(audio.blob);
+        if (audioEs?.blob) {
+          if (!nuevosAudios[idSitio]) nuevosAudios[idSitio] = {};
+          nuevosAudios[idSitio].es = URL.createObjectURL(audioEs.blob);
         }
       } catch (error) {
         console.warn(
-          `No se pudo cargar el audio offline del sitio ${idSitio}:`,
+          `No se pudo cargar la audioguía en español offline del sitio ${idSitio}:`,
+          error,
+        );
+      }
+
+      try {
+        const audioEn = await obtenerRecursoOffline(idSitio, "audioguia_en");
+
+        if (audioEn?.blob) {
+          if (!nuevosAudios[idSitio]) nuevosAudios[idSitio] = {};
+          nuevosAudios[idSitio].en = URL.createObjectURL(audioEn.blob);
+        }
+      } catch (error) {
+        console.warn(
+          `No se pudo cargar la audioguía en inglés offline del sitio ${idSitio}:`,
           error,
         );
       }
@@ -445,26 +460,58 @@ export default function Sitios() {
         }
       }
 
-      // 3. Descargar audioguía
+      // 3. Descargar audioguías
 
-      if (sitio.audioguia_url) {
+      if (sitio.audioguia_es_url || sitio.audioguia_en_url) {
         setProgresoDescarga({
-          tipo: "Descargando audioguía...",
+          tipo: "Descargando audioguías...",
           porcentaje: 30,
         });
 
-        try {
-          const respuestaAudio = await fetch(sitio.audioguia_url);
+        if (sitio.audioguia_es_url) {
+          try {
+            const respuestaAudioEs = await fetch(sitio.audioguia_es_url);
 
-          if (!respuestaAudio.ok) {
-            throw new Error(`Error HTTP ${respuestaAudio.status}`);
+            if (!respuestaAudioEs.ok) {
+              throw new Error(`Error HTTP ${respuestaAudioEs.status}`);
+            }
+
+            const audioEsBlob = await respuestaAudioEs.blob();
+
+            await guardarRecursoOffline(
+              sitio.id_sitio,
+              "audioguia_es",
+              audioEsBlob,
+            );
+          } catch (errorAudioEs) {
+            console.warn(
+              "No se pudo descargar la audioguía en español:",
+              errorAudioEs,
+            );
           }
+        }
 
-          const audioBlob = await respuestaAudio.blob();
+        if (sitio.audioguia_en_url) {
+          try {
+            const respuestaAudioEn = await fetch(sitio.audioguia_en_url);
 
-          await guardarRecursoOffline(sitio.id_sitio, "audioguia", audioBlob);
-        } catch (errorAudio) {
-          console.warn("No se pudo descargar la audioguía:", errorAudio);
+            if (!respuestaAudioEn.ok) {
+              throw new Error(`Error HTTP ${respuestaAudioEn.status}`);
+            }
+
+            const audioEnBlob = await respuestaAudioEn.blob();
+
+            await guardarRecursoOffline(
+              sitio.id_sitio,
+              "audioguia_en",
+              audioEnBlob,
+            );
+          } catch (errorAudioEn) {
+            console.warn(
+              "No se pudo descargar la audioguía en inglés:",
+              errorAudioEn,
+            );
+          }
         }
       }
 
@@ -704,11 +751,13 @@ export default function Sitios() {
 
               const imagenOffline = imagenesOffline[idSitio];
 
-              const audioOffline = audiosOffline[idSitio];
+              const audioOffline = audiosOffline[idSitio] || {};
 
               const imagenMostrar = imagenOffline || sitio.imagen_url;
 
-              const audioMostrar = audioOffline || sitio.audioguia_url;
+              const audioEsMostrar = audioOffline.es || sitio.audioguia_es_url;
+
+              const audioEnMostrar = audioOffline.en || sitio.audioguia_en_url;
 
               return (
                 <article className="sitio-card" key={sitio.id_sitio}>
@@ -815,15 +864,45 @@ export default function Sitios() {
                         📍 {sitio.latitud}, {sitio.longitud}
                       </span>
 
-                      {/* AUDIO */}
+                      {/* AUDIOGUÍAS */}
 
-                      {audioMostrar ? (
+                      {audioEsMostrar || audioEnMostrar ? (
                         <div className="sitio-card-audio">
-                          <audio controls src={audioMostrar} preload="none">
-                            Tu navegador no soporta el elemento de audio.
-                          </audio>
+                          {audioEsMostrar && (
+                            <div className="sitio-card-audio-idioma">
+                              <strong>🇪🇸 Audioguía en español</strong>
 
-                          {audioOffline && <small>🎧 Audioguía offline</small>}
+                              <audio
+                                controls
+                                src={audioEsMostrar}
+                                preload="none"
+                              >
+                                Tu navegador no soporta el elemento de audio.
+                              </audio>
+
+                              {audioOffline?.es && (
+                                <small>🎧 Disponible offline</small>
+                              )}
+                            </div>
+                          )}
+
+                          {audioEnMostrar && (
+                            <div className="sitio-card-audio-idioma">
+                              <strong>🇬🇧 Audioguía en inglés</strong>
+
+                              <audio
+                                controls
+                                src={audioEnMostrar}
+                                preload="none"
+                              >
+                                Tu navegador no soporta el elemento de audio.
+                              </audio>
+
+                              {audioOffline?.en && (
+                                <small>🎧 Disponible offline</small>
+                              )}
+                            </div>
+                          )}
                         </div>
                       ) : (
                         <span className="sitio-card-sin-audio">
@@ -881,7 +960,8 @@ export default function Sitios() {
           latitud={sitioParaRuta.latitud}
           longitud={sitioParaRuta.longitud}
           titulo={sitioParaRuta.titulo_es}
-          audioguiaUrl={sitioParaRuta.audioguia_url}
+          audioguiaEsUrl={sitioParaRuta.audioguia_es_url}
+          audioguiaEnUrl={sitioParaRuta.audioguia_en_url}
           idSitio={sitioParaRuta.id_sitio}
           onCerrar={() => setSitioParaRuta(null)}
         />
