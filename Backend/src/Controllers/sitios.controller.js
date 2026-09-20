@@ -1,33 +1,42 @@
-import jwt from "jsonwebtoken";
-import { UserRepository } from "../repositories/auth.repository.js";
 import { SitiosRepository } from "../repositories/sitios.repository.js";
 
-//Listar los sitios
+// Listar los sitios
 export const getSitios = async (req, res) => {
   try {
     const sitios = await SitiosRepository.getSitios();
+
     res.status(200).json(sitios);
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: "error al obtener sitios", details: error.message });
+    res.status(500).json({
+      error: "error al obtener sitios",
+      details: error.message,
+    });
   }
 };
 
-//Sitios x id
+// Sitio por ID
 export const findByIdSitios = async (req, res) => {
   const { id } = req.params;
+
   try {
     const sitio = await SitiosRepository.findByIdSitios(id);
+
     if (!sitio) {
-      return res.status(404).json({ message: "sitio no encontrado" });
+      return res.status(404).json({
+        message: "sitio no encontrado",
+      });
     }
+
     res.status(200).json(sitio);
   } catch (error) {
-    res.status(500).json({ error: "error el sitio", details: error.message });
+    res.status(500).json({
+      error: "error el sitio",
+      details: error.message,
+    });
   }
 };
-// 3. Crear un sitio nuevo
+
+// Crear un sitio nuevo
 export const create = async (req, res) => {
   try {
     const {
@@ -38,10 +47,11 @@ export const create = async (req, res) => {
       longitud,
       latitud,
       imagen_url,
-      audioguia_url,
+      audioguia_es_url,
+      audioguia_en_url,
     } = req.body;
 
-    // El ID del creador se extrae automáticamente del token verificado por el middleware
+    // El ID del creador se extrae automáticamente del token
     const id_creador = req.user?.id || req.user?.id_usuario;
 
     // Validación básica de campos obligatorios
@@ -67,7 +77,8 @@ export const create = async (req, res) => {
       longitud,
       latitud,
       imagen_url,
-      audioguia_url,
+      audioguia_es_url,
+      audioguia_en_url,
       id_creador,
     });
 
@@ -83,10 +94,11 @@ export const create = async (req, res) => {
   }
 };
 
-// 4. Actualizar un sitio por ID
+// Actualizar un sitio por ID
 export const update = async (req, res) => {
   try {
     const { id } = req.params;
+
     const {
       titulo_es,
       titulo_en,
@@ -95,7 +107,8 @@ export const update = async (req, res) => {
       longitud,
       latitud,
       imagen_url,
-      audioguia_url,
+      audioguia_es_url,
+      audioguia_en_url,
     } = req.body;
 
     if (
@@ -120,13 +133,14 @@ export const update = async (req, res) => {
       longitud,
       latitud,
       imagen_url,
-      audioguia_url,
+      audioguia_es_url,
+      audioguia_en_url,
     });
 
     if (!sitioActualizado) {
-      return res
-        .status(404)
-        .json({ message: "Sitio patrimonial no encontrado para actualizar" });
+      return res.status(404).json({
+        message: "Sitio patrimonial no encontrado para actualizar",
+      });
     }
 
     return res.status(200).json({
@@ -141,16 +155,17 @@ export const update = async (req, res) => {
   }
 };
 
-// 5. Eliminar un sitio por ID
+// Eliminar un sitio por ID
 export const deleteSitio = async (req, res) => {
   try {
     const { id } = req.params;
+
     const sitioEliminado = await SitiosRepository.deleteSitio(id);
 
     if (!sitioEliminado) {
-      return res
-        .status(404)
-        .json({ message: "Sitio patrimonial no encontrado para eliminar" });
+      return res.status(404).json({
+        message: "Sitio patrimonial no encontrado para eliminar",
+      });
     }
 
     return res.status(200).json({
@@ -170,26 +185,22 @@ export const getSitiosCercanos = async (req, res) => {
     const { lat, lng, radio } = req.query;
 
     if (!lat || !lng) {
-      return res
-        .status(400)
-        .json({
-          error: "Debes proporcionar lat y lng en los parámetros de búsqueda",
-        });
+      return res.status(400).json({
+        error: "Debes proporcionar lat y lng en los parámetros de búsqueda",
+      });
     }
 
     const sitios = await SitiosRepository.getCercanos(
       parseFloat(lat),
       parseFloat(lng),
-      radio ? parseInt(radio) : 5000, // Radio por defecto: 5 km (5000m)
+      radio ? parseInt(radio) : 5000,
     );
 
     return res.status(200).json(sitios);
   } catch (error) {
-    return res
-      .status(500)
-      .json({
-        error: "Error al buscar sitios cercanos",
-        details: error.message,
-      });
+    return res.status(500).json({
+      error: "Error al buscar sitios cercanos",
+      details: error.message,
+    });
   }
 };

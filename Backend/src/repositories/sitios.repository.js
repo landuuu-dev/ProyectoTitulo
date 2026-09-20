@@ -14,14 +14,14 @@ export const SitiosRepository = {
         ST_X(s.ubicacion::geometry) AS longitud,
         ST_Y(s.ubicacion::geometry) AS latitud,
         s.imagen_url,
-        s.audioguia_url,
+        s.audioguia_es_url,
+        s.audioguia_en_url,
         s.id_creador,
         COALESCE(u.nombre, 'Sin Creador') AS nombre_creador
       FROM sitios_patrimoniales s
       LEFT JOIN usuarios u ON s.id_creador = u.id_usuario
     `);
 
-    // Parsear el GeoJSON para que se entregue como objeto JSON nativo al frontend
     return result.rows.map((row) => ({
       ...row,
       ubicacion: row.ubicacion ? JSON.parse(row.ubicacion) : null,
@@ -41,7 +41,8 @@ export const SitiosRepository = {
         ST_X(s.ubicacion::geometry) AS longitud,
         ST_Y(s.ubicacion::geometry) AS latitud,
         s.imagen_url,
-        s.audioguia_url,
+        s.audioguia_es_url,
+        s.audioguia_en_url,
         s.id_creador,
         COALESCE(u.nombre, 'Sin Creador') AS nombre_creador
       FROM sitios_patrimoniales s
@@ -53,6 +54,7 @@ export const SitiosRepository = {
     if (result.rows.length === 0) return null;
 
     const row = result.rows[0];
+
     return {
       ...row,
       ubicacion: row.ubicacion ? JSON.parse(row.ubicacion) : null,
@@ -68,7 +70,8 @@ export const SitiosRepository = {
     longitud,
     latitud,
     imagen_url,
-    audioguia_url,
+    audioguia_es_url,
+    audioguia_en_url,
     id_creador,
   }) {
     const result = await pool.query(
@@ -79,15 +82,22 @@ export const SitiosRepository = {
         descripcion_en, 
         ubicacion, 
         imagen_url, 
-        audioguia_url, 
+        audioguia_es_url,
+        audioguia_en_url,
         id_creador
       ) 
       VALUES (
         $1, $2, $3, $4, 
         ST_SetSRID(ST_MakePoint($5, $6), 4326)::geography, 
-        $7, $8, $9
+        $7, $8, $9, $10
       ) 
-      RETURNING id_sitio, titulo_es, titulo_en, id_creador`,
+      RETURNING 
+        id_sitio,
+        titulo_es,
+        titulo_en,
+        id_creador,
+        audioguia_es_url,
+        audioguia_en_url`,
       [
         titulo_es,
         titulo_en,
@@ -96,10 +106,12 @@ export const SitiosRepository = {
         longitud,
         latitud,
         imagen_url,
-        audioguia_url,
+        audioguia_es_url,
+        audioguia_en_url,
         id_creador,
       ],
     );
+
     return result.rows[0];
   },
 
@@ -114,7 +126,8 @@ export const SitiosRepository = {
       longitud,
       latitud,
       imagen_url,
-      audioguia_url,
+      audioguia_es_url,
+      audioguia_en_url,
     },
   ) {
     const result = await pool.query(
@@ -126,9 +139,16 @@ export const SitiosRepository = {
          descripcion_en = $4,
          ubicacion = ST_SetSRID(ST_MakePoint($5, $6), 4326)::geography,
          imagen_url = $7,
-         audioguia_url = $8
-       WHERE id_sitio = $9
-       RETURNING id_sitio, titulo_es, titulo_en`,
+         audioguia_es_url = $8,
+         audioguia_en_url = $9
+       WHERE id_sitio = $10
+
+       RETURNING 
+         id_sitio,
+         titulo_es,
+         titulo_en,
+         audioguia_es_url,
+         audioguia_en_url`,
       [
         titulo_es,
         titulo_en,
@@ -137,10 +157,12 @@ export const SitiosRepository = {
         longitud,
         latitud,
         imagen_url,
-        audioguia_url,
+        audioguia_es_url,
+        audioguia_en_url,
         id,
       ],
     );
+
     return result.rows[0] || null;
   },
 
@@ -152,6 +174,7 @@ export const SitiosRepository = {
        RETURNING id_sitio`,
       [id],
     );
+
     return result.rows[0] || null;
   },
 
@@ -165,16 +188,28 @@ export const SitiosRepository = {
         imagen_url,
         ST_X(ubicacion::geometry) AS longitud,
         ST_Y(ubicacion::geometry) AS latitud,
-        ROUND(ST_Distance(ubicacion, ST_SetSRID(ST_MakePoint($1, $2), 4326)::geography)) AS distancia_metros
-     FROM sitios_patrimoniales
-     WHERE ST_DWithin(
+        ROUND(
+          ST_Distance(
+            ubicacion,
+            ST_SetSRID(
+              ST_MakePoint($1, $2),
+              4326
+            )::geography
+          )
+        ) AS distancia_metros
+      FROM sitios_patrimoniales
+      WHERE ST_DWithin(
         ubicacion,
-        ST_SetSRID(ST_MakePoint($1, $2), 4326)::geography,
+        ST_SetSRID(
+          ST_MakePoint($1, $2),
+          4326
+        )::geography,
         $3
-     )
-     ORDER BY distancia_metros ASC`,
+      )
+      ORDER BY distancia_metros ASC`,
       [lng, lat, radioMetros],
     );
+
     return result.rows;
   },
 };
