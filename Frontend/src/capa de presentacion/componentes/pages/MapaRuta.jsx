@@ -119,7 +119,8 @@ export default function MapaRuta({
   latitud,
   longitud,
   titulo = "Sitio patrimonial",
-  audioguiaUrl = "",
+  audioguiaEsUrl = "",
+  audioguiaEnUrl = "",
   idSitio,
   onCerrar,
 }) {
@@ -156,7 +157,9 @@ export default function MapaRuta({
 
   const [rutaDisponibleOffline, setRutaDisponibleOffline] = useState(false);
 
-  const [audioguiaOffline, setAudioguiaOffline] = useState(null);
+  const [audioguiaEsOffline, setAudioguiaEsOffline] = useState(null);
+  const [audioguiaEnOffline, setAudioguiaEnOffline] = useState(null);
+  const [idiomaAudioguia, setIdiomaAudioguia] = useState("es");
 
   /* =======================================================
      REFS
@@ -207,12 +210,16 @@ export default function MapaRuta({
       }
 
       try {
-        const recurso = await obtenerRecursoOffline(idSitio, "audioguia");
+        const recursoEs = await obtenerRecursoOffline(idSitio, "audioguia_es");
+        if (recursoEs?.blob) {
+          const urlEs = URL.createObjectURL(recursoEs.blob);
+          setAudioguiaEsOffline(urlEs);
+        }
 
-        if (recurso?.blob) {
-          const url = URL.createObjectURL(recurso.blob);
-
-          setAudioguiaOffline(url);
+        const recursoEn = await obtenerRecursoOffline(idSitio, "audioguia_en");
+        if (recursoEn?.blob) {
+          const urlEn = URL.createObjectURL(recursoEn.blob);
+          setAudioguiaEnOffline(urlEn);
         }
       } catch (error) {
         console.error("Error cargando audioguía offline:", error);
@@ -222,7 +229,15 @@ export default function MapaRuta({
     cargarAudioguiaOffline();
 
     return () => {
-      setAudioguiaOffline((urlAnterior) => {
+      setAudioguiaEsOffline((urlAnterior) => {
+        if (urlAnterior) {
+          URL.revokeObjectURL(urlAnterior);
+        }
+
+        return null;
+      });
+
+      setAudioguiaEnOffline((urlAnterior) => {
         if (urlAnterior) {
           URL.revokeObjectURL(urlAnterior);
         }
@@ -286,7 +301,12 @@ export default function MapaRuta({
 
           setHaLlegado(true);
 
-          if (audioguiaUrl || audioguiaOffline) {
+          if (
+            audioguiaEsUrl ||
+            audioguiaEnUrl ||
+            audioguiaEsOffline ||
+            audioguiaEnOffline
+          ) {
             setMostrarAudioguia(true);
           }
         }
@@ -345,7 +365,14 @@ export default function MapaRuta({
         watchIdRef.current = null;
       }
     };
-  }, [destino.lat, destino.lng, audioguiaUrl, audioguiaOffline]);
+  }, [
+    destino.lat,
+    destino.lng,
+    audioguiaEsUrl,
+    audioguiaEnUrl,
+    audioguiaEsOffline,
+    audioguiaEnOffline,
+  ]);
 
   /* =======================================================
      OBTENER RUTA
@@ -516,12 +543,10 @@ export default function MapaRuta({
   ======================================================= */
 
   const reproducirAudioguia = () => {
-    /*
-     * Si existe una versión
-     * descargada, usamos esa.
-     */
-
-    const fuenteAudio = audioguiaOffline || audioguiaUrl;
+    const fuenteAudio =
+      idiomaAudioguia === "es"
+        ? audioguiaEsOffline || audioguiaEsUrl
+        : audioguiaEnOffline || audioguiaEnUrl;
 
     if (!fuenteAudio) {
       return;
@@ -789,11 +814,37 @@ export default function MapaRuta({
                 Ahora puedes escuchar la audioguía de este sitio patrimonial.
               </p>
 
-              {audioguiaOffline && (
+              {(audioguiaEsOffline || audioguiaEnOffline) && (
                 <p className="mapa-ruta-audio-offline">
-                  📥 Audioguía disponible sin conexión
+                  📥 Audioguías disponibles sin conexión
                 </p>
               )}
+
+              <div className="mapa-ruta-audioguia-idiomas">
+                <button
+                  type="button"
+                  className={idiomaAudioguia === "es" ? "activo" : ""}
+                  onClick={() => {
+                    pausarAudioguia();
+                    setIdiomaAudioguia("es");
+                  }}
+                  disabled={!audioguiaEsUrl && !audioguiaEsOffline}
+                >
+                  🇪🇸 Español
+                </button>
+
+                <button
+                  type="button"
+                  className={idiomaAudioguia === "en" ? "activo" : ""}
+                  onClick={() => {
+                    pausarAudioguia();
+                    setIdiomaAudioguia("en");
+                  }}
+                  disabled={!audioguiaEnUrl && !audioguiaEnOffline}
+                >
+                  🇬🇧 English
+                </button>
+              </div>
 
               <div className="mapa-ruta-audioguia-acciones">
                 {!reproduciendo ? (
